@@ -1,0 +1,15 @@
+# Exclude heavyweight dirs from Docker build context
+target/
+.git/
+.idea/
+*.iml
+.vscode/
+*.log
+logs/
+
+# Exclude env files with secrets
+.env
+*.pem
+*.key
+service-account*.json
+firebase-adminsdk*.json

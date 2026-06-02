@@ -1,0 +1,45 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: czar-notes
+  # Notes are stored in the 'users' schema — connects with czar_user_role
+  datasource:
+    url: ${DB_NOTES_URL:jdbc:postgresql://localhost:5432/czardb}
+    username: ${DB_NOTES_USERNAME:czar_user_role}
+    password: ${DB_NOTES_PASSWORD:czar_user_pass}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_schema: users
+    open-in-view: false
+  flyway:
+    enabled: false          # Enabled in Phase 2 (shares users schema migrations with czar-user)
+    schemas: users
+    locations: classpath:db/migration/users
+    baseline-on-migrate: true
+  cloud:
+    gcp:
+      project-id: ${GCP_PROJECT_ID:czar-local}
+      pubsub:
+        emulator-host: ${PUBSUB_EMULATOR_HOST:}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    com.czar: DEBUG

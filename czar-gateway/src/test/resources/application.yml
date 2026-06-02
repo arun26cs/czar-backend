@@ -1,0 +1,9 @@
+spring:
+  cloud:
+    gateway:
+      routes: []
+  autoconfigure:
+    exclude:
+      - com.google.cloud.spring.autoconfigure.pubsub.GcpPubSubAutoConfiguration
+      - com.google.cloud.spring.autoconfigure.pubsub.GcpPubSubReactiveAutoConfiguration
+      - com.google.cloud.spring.autoconfigure.core.GcpContextAutoConfiguration

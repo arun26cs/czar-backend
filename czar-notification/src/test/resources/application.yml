@@ -1,0 +1,5 @@
+spring:
+  autoconfigure:
+    exclude:
+      - com.google.cloud.spring.autoconfigure.pubsub.GcpPubSubAutoConfiguration
+      - com.google.cloud.spring.autoconfigure.core.GcpContextAutoConfiguration

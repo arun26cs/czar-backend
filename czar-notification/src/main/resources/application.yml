@@ -1,0 +1,33 @@
+server:
+  port: 8087
+
+spring:
+  application:
+    name: czar-notification
+  cloud:
+    gcp:
+      project-id: ${GCP_PROJECT_ID:czar-local}
+      pubsub:
+        emulator-host: ${PUBSUB_EMULATOR_HOST:}
+
+# Firebase project for FCM push — configured in Phase 8
+firebase:
+  project-id: ${FIREBASE_PROJECT_ID:czar-local}
+
+# Service-to-service call to czar-user to fetch device tokens
+czar:
+  user:
+    base-url: ${CZAR_USER_BASE_URL:http://localhost:8082}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    com.czar: DEBUG

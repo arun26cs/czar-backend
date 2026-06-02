@@ -1,0 +1,29 @@
+server:
+  port: 8086
+
+spring:
+  application:
+    name: czar-conflict
+  cloud:
+    gcp:
+      project-id: ${GCP_PROJECT_ID:czar-local}
+      pubsub:
+        emulator-host: ${PUBSUB_EMULATOR_HOST:}
+
+# Service-to-service call to czar-planner for conflict resolution
+czar:
+  planner:
+    base-url: ${CZAR_PLANNER_BASE_URL:http://localhost:8083}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    com.czar: DEBUG

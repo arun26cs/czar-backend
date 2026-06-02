@@ -1,0 +1,74 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: czar-auth
+  datasource:
+    url: ${DB_AUTH_URL:jdbc:postgresql://localhost:5432/czardb}
+    username: ${DB_AUTH_USERNAME:czar_auth_role}
+    password: ${DB_AUTH_PASSWORD:czar_auth_pass}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      connection-timeout: 30000
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_schema: auth
+    open-in-view: false
+  flyway:
+    enabled: true
+    schemas: auth
+    locations: classpath:db/migration/auth
+    baseline-on-migrate: true
+  cloud:
+    gcp:
+      project-id: ${GCP_PROJECT_ID:czar-local}
+      pubsub:
+        emulator-host: ${PUBSUB_EMULATOR_HOST:}
+  # OAuth2 — real Google + GitHub apps registered with localhost redirect URIs
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope: openid,email,profile
+            redirect-uri: "{baseUrl}/login/oauth2/code/google"
+          github:
+            client-id: ${GITHUB_CLIENT_ID}
+            client-secret: ${GITHUB_CLIENT_SECRET}
+            scope: read:user,user:email
+            redirect-uri: "{baseUrl}/login/oauth2/code/github"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+# JWT — RSA key pair loaded from PEM files
+jwt:
+  issuer: czar-auth
+  access-token-expiry-minutes: 15
+  refresh-token-expiry-days: 30
+  private-key-path: classpath:keys/private.pem
+  public-key-path: classpath:keys/public.pem
+
+# SendGrid — falls back to console logging if blank (local dev without SendGrid key)
+sendgrid:
+  api-key: ${SENDGRID_API_KEY:}
+  from-address: ${SENDGRID_FROM_ADDRESS:noreply@czar.app}
+
+logging:
+  level:
+    com.czar: DEBUG
+    org.springframework.security: INFO

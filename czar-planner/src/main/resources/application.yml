@@ -1,0 +1,44 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: czar-planner
+  datasource:
+    url: ${DB_PLANNER_URL:jdbc:postgresql://localhost:5432/czardb}
+    username: ${DB_PLANNER_USERNAME:czar_planner_role}
+    password: ${DB_PLANNER_PASSWORD:czar_planner_pass}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_schema: planner
+    open-in-view: false
+  flyway:
+    enabled: true
+    schemas: planner
+    locations: classpath:db/migration/planner
+    baseline-on-migrate: true
+  cloud:
+    gcp:
+      project-id: ${GCP_PROJECT_ID:czar-local}
+      pubsub:
+        emulator-host: ${PUBSUB_EMULATOR_HOST:}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    com.czar: DEBUG

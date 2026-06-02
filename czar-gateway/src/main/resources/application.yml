@@ -1,0 +1,31 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: czar-gateway
+  cloud:
+    gateway:
+      # Routes are configured in Phase 9 after all services are implemented.
+      # Phase 9 routing table:
+      #   /auth/**              → czar-auth:8081    (public, no JWT)
+      #   /api/v1/users/**      → czar-user:8082    (JWT required)
+      #   /api/v1/plans/**      → czar-planner:8083 (JWT required)
+      #   /api/v1/notes/**      → czar-notes:8084   (JWT required)
+      #   /api/v1/voice/**      → czar-voice-ai:8085 (JWT required)
+      #   /api/v1/notifications/** → czar-notification:8087 (JWT required)
+      routes: []
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    com.czar: DEBUG
+    org.springframework.cloud.gateway: INFO

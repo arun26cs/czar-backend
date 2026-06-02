@@ -1,0 +1,32 @@
+server:
+  port: 8085
+
+spring:
+  application:
+    name: czar-voice-ai
+  cloud:
+    gcp:
+      project-id: ${GCP_PROJECT_ID:czar-local}
+      pubsub:
+        emulator-host: ${PUBSUB_EMULATOR_HOST:}
+
+# Groq API — key loaded from GCP Secret Manager (prod) or env var (dev)
+# Configured in Phase 7
+groq:
+  api-key: ${GROQ_API_KEY:placeholder}
+  base-url: https://api.groq.com/openai/v1
+  model: llama-3.1-8b-instant
+  timeout-seconds: 30
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    com.czar: DEBUG

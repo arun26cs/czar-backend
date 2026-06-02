@@ -1,0 +1,44 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:czar_auth_test;DB_CLOSE_DELAY=-1;MODE=PostgreSQL;INIT=CREATE SCHEMA IF NOT EXISTS AUTH
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        default_schema: PUBLIC
+  flyway:
+    enabled: false
+  autoconfigure:
+    exclude:
+      - com.google.cloud.spring.autoconfigure.pubsub.GcpPubSubAutoConfiguration
+      - com.google.cloud.spring.autoconfigure.core.GcpContextAutoConfiguration
+      - org.springframework.boot.autoconfigure.security.oauth2.resource.servlet.OAuth2ResourceServerAutoConfiguration
+  # Dummy OAuth2 registrations so ClientRegistrationRepository bean is created
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: test-google-client-id
+            client-secret: test-google-client-secret
+            scope: openid,email,profile
+          github:
+            client-id: test-github-client-id
+            client-secret: test-github-client-secret
+            scope: read:user,user:email
+
+# Stub JWT key paths for tests — RsaKeyConfig is not exercised in contextLoads()
+jwt:
+  issuer: czar-auth-test
+  access-token-expiry-minutes: 15
+  refresh-token-expiry-days: 30
+  private-key-path: classpath:keys/private.pem
+  public-key-path: classpath:keys/public.pem
+
+sendgrid:
+  api-key: ""

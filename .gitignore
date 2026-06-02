@@ -1,0 +1,39 @@
+# ─── Build output ────────────────────────────────────────────────────
+target/
+*.class
+*.jar
+*.war
+
+# ─── IDE ─────────────────────────────────────────────────────────────
+.idea/
+*.iml
+.vscode/
+*.eclipse
+.classpath
+.project
+.settings/
+
+# ─── Maven ───────────────────────────────────────────────────────────
+.mvn/wrapper/maven-wrapper.jar
+!.mvn/wrapper/maven-wrapper.properties
+
+# ─── Spring Boot ─────────────────────────────────────────────────────
+application-local.yml
+application-prod.yml
+
+# ─── Secrets — NEVER commit real credentials ─────────────────────────
+.env
+*.pem
+*.key
+*.p12
+*.jks
+service-account*.json
+firebase-adminsdk*.json
+
+# ─── OS ──────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ─── Logs ────────────────────────────────────────────────────────────
+*.log
+logs/
