@@ -22,12 +22,9 @@ services:
       - czar-network
 
   pubsub-emulator:
-    image: gcr.io/google.com/cloudsdktool/google-cloud-cli:slim
+    image: gcr.io/google.com/cloudsdktool/google-cloud-cli:emulators
     container_name: czar-pubsub-emulator
-    command: >
-      bash -c "gcloud beta emulators pubsub start
-               --host-port=0.0.0.0:8085
-               --project=czar-local"
+    command: ["gcloud", "beta", "emulators", "pubsub", "start", "--host-port=0.0.0.0:8085", "--project=czar-local"]
     ports:
       - "9085:8085"   # host 9085 → container 8085 (avoids conflict with czar-voice-ai on host 8085)
     networks:

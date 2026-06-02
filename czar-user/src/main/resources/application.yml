@@ -29,6 +29,12 @@ spring:
       project-id: ${GCP_PROJECT_ID:czar-local}
       pubsub:
         emulator-host: ${PUBSUB_EMULATOR_HOST:}
+  mvc:
+    problemdetails:
+      enabled: true
+
+jwt:
+  public-key-path: classpath:keys/public.pem
 
 management:
   endpoints:
