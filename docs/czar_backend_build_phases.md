@@ -182,7 +182,7 @@
 
 ---
 
-## Phase 5 — Planner Service (`czar-planner`)
+## Phase 5 — Planner Service (`czar-planner`) ✅ COMPLETED
 
 **Goal:** Implement full plan CRUD, tag assignment, conflict detection, status management, and Pub/Sub publishing. No folder references.
 
@@ -217,7 +217,7 @@
 
 ---
 
-## Phase 6 — Notes Service (`czar-notes`)
+## Phase 6 — Notes Service (`czar-notes`) ✅ COMPLETED
 
 **Goal:** Implement note CRUD with JSONB body storage, tag assignment, pin/unpin, full-text search, bulk tagging, and Pub/Sub events. No folder references.
 
