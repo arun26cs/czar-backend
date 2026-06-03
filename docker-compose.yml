@@ -156,7 +156,7 @@ services:
     environment:
       - GCP_PROJECT_ID=czar-local
       - PUBSUB_EMULATOR_HOST=pubsub-emulator:8085
-      - GROQ_API_KEY=${GROQ_API_KEY:-placeholder}
+      - GROQ_API_KEY=${GROQ_API_KEY}
     depends_on:
       - pubsub-emulator
     networks:

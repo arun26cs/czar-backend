@@ -4,3 +4,11 @@ spring:
       - com.google.cloud.spring.autoconfigure.pubsub.GcpPubSubAutoConfiguration
       - com.google.cloud.spring.autoconfigure.pubsub.GcpPubSubReactiveAutoConfiguration
       - com.google.cloud.spring.autoconfigure.core.GcpContextAutoConfiguration
+  webflux:
+    problemdetails:
+      enabled: true
+
+groq:
+  api-key: test-placeholder
+  base-url: https://api.groq.com/openai/v1
+  model: llama-3.1-8b-instant

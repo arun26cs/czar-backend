@@ -250,7 +250,7 @@
 
 ---
 
-## Phase 7 — Voice AI Service (`czar-voice-ai`)
+## Phase 7 — Voice AI Service (`czar-voice-ai`) ✅ COMPLETED
 
 **Goal:** Receive mobile transcript, call Groq API, parse intent into structured plan/note items, publish result.
 
