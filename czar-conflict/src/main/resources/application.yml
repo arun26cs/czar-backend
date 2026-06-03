@@ -14,6 +14,8 @@ spring:
 czar:
   planner:
     base-url: ${CZAR_PLANNER_BASE_URL:http://localhost:8083}
+  internal:
+    service-token: ${CZAR_INTERNAL_SERVICE_TOKEN:czar-internal-dev-token}
 
 management:
   endpoints:

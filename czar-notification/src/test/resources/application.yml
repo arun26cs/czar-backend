@@ -3,3 +3,10 @@ spring:
     exclude:
       - com.google.cloud.spring.autoconfigure.pubsub.GcpPubSubAutoConfiguration
       - com.google.cloud.spring.autoconfigure.core.GcpContextAutoConfiguration
+      - com.google.cloud.spring.autoconfigure.firestore.GcpFirestoreAutoConfiguration
+
+czar:
+  user:
+    base-url: http://localhost:8082
+  internal:
+    service-token: test-internal-token

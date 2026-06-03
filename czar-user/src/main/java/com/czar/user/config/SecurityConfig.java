@@ -33,7 +33,7 @@ public class SecurityConfig {
             UserJwtFilter jwtFilter = new UserJwtFilter(rsaPublicKey);
             http
                 .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/actuator/health", "/actuator/info").permitAll()
+                    .requestMatchers("/actuator/health", "/actuator/info", "/internal/**").permitAll()
                     .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

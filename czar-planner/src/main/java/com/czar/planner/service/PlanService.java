@@ -75,7 +75,7 @@ public class PlanService {
         List<Plan> sameDayPlans = planRepository.findActiveByUserAndDate(userId, request.scheduledDate());
         conflictDetectionService.detectAndRecord(plan, sameDayPlans);
 
-        eventPublisher.publish("plan.created", userId.toString(), plan.getId().toString());
+        eventPublisher.publish("plan.created", userId.toString(), plan.getId().toString(), plan.getScheduledDate());
         return toResponse(plan, tagIds);
     }
 
@@ -103,7 +103,7 @@ public class PlanService {
         List<Plan> sameDayPlans = planRepository.findActiveByUserAndDate(userId, plan.getScheduledDate());
         conflictDetectionService.detectAndRecord(plan, sameDayPlans);
 
-        eventPublisher.publish("plan.updated", userId.toString(), plan.getId().toString());
+        eventPublisher.publish("plan.updated", userId.toString(), plan.getId().toString(), plan.getScheduledDate());
         return toResponse(plan, tagIds);
     }
 
@@ -112,7 +112,7 @@ public class PlanService {
         Plan plan = findOwned(userId, id);
         plan.setDeletedAt(Instant.now());
         planRepository.save(plan);
-        eventPublisher.publish("plan.deleted", userId.toString(), plan.getId().toString());
+        eventPublisher.publish("plan.deleted", userId.toString(), plan.getId().toString(), plan.getScheduledDate());
     }
 
     @Transactional

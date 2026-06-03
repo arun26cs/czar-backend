@@ -45,6 +45,10 @@ management:
     health:
       show-details: always
 
+czar:
+  internal:
+    service-token: ${CZAR_INTERNAL_SERVICE_TOKEN:czar-internal-dev-token}
+
 logging:
   level:
     com.czar: DEBUG

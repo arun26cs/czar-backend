@@ -10,14 +10,18 @@ spring:
       pubsub:
         emulator-host: ${PUBSUB_EMULATOR_HOST:}
 
-# Firebase project for FCM push — configured in Phase 8
+# Firebase project for FCM push
 firebase:
+  enabled: ${FIREBASE_ENABLED:false}
   project-id: ${FIREBASE_PROJECT_ID:czar-local}
+  service-account-path: ${FIREBASE_SERVICE_ACCOUNT_PATH:}
 
 # Service-to-service call to czar-user to fetch device tokens
 czar:
   user:
     base-url: ${CZAR_USER_BASE_URL:http://localhost:8082}
+  internal:
+    service-token: ${CZAR_INTERNAL_SERVICE_TOKEN:czar-internal-dev-token}
 
 management:
   endpoints:

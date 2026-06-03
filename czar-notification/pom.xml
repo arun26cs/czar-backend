@@ -40,11 +40,11 @@
             <groupId>com.google.cloud</groupId>
             <artifactId>spring-cloud-gcp-starter-pubsub</artifactId>
         </dependency>
-        <!-- Firebase Admin SDK — added when implementing Phase 8 -->
-        <!-- <dependency>
+        <!-- Firebase Admin SDK for FCM push notifications -->
+        <dependency>
             <groupId>com.google.firebase</groupId>
             <artifactId>firebase-admin</artifactId>
             <version>9.3.0</version>
-        </dependency> -->
+        </dependency>
     </dependencies>
 </project>

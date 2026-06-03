@@ -8,6 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,19 +32,30 @@ public class PlanEventPublisher {
         this.objectMapper = objectMapper;
     }
 
+    /** Publish without scheduledDate (backward-compat). */
     public void publish(String eventType, String userId, String planId) {
+        publish(eventType, userId, planId, null);
+    }
+
+    /** Publish with scheduledDate so czar-conflict can query plans without an extra round-trip. */
+    public void publish(String eventType, String userId, String planId, LocalDate scheduledDate) {
         pubSubTemplate.ifPresentOrElse(
                 template -> {
                     try {
+                        Map<String, String> payloadMap = new LinkedHashMap<>();
+                        payloadMap.put("planId", planId);
+                        if (scheduledDate != null) {
+                            payloadMap.put("scheduledDate", scheduledDate.toString());
+                        }
                         PubSubMessageEnvelope envelope = PubSubMessageEnvelope.builder()
                                 .eventType(eventType)
                                 .userId(userId)
                                 .eventId(UUID.randomUUID().toString())
                                 .occurredAt(Instant.now())
-                                .payload("{\"planId\":\"" + planId + "\"}")
+                                .payload(objectMapper.writeValueAsString(payloadMap))
                                 .build();
                         template.publish(TOPIC, objectMapper.writeValueAsString(envelope));
-                        log.debug("Published {} for planId={}", eventType, planId);
+                        log.debug("Published {} for planId={} scheduledDate={}", eventType, planId, scheduledDate);
                     } catch (Exception e) {
                         log.error("Failed to publish {}: {}", eventType, e.getMessage());
                     }
