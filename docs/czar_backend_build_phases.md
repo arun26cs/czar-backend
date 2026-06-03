@@ -319,7 +319,7 @@
 
 ---
 
-## Phase 9 — API Gateway, Integration Testing & Security Hardening
+## Phase 9 — API Gateway, Integration Testing & Security Hardening ✅ COMPLETED
 
 **Goal:** Wire all services behind Spring Cloud Gateway, validate end-to-end flows, and harden security.
 
@@ -358,9 +358,13 @@
 12. Confirm all JPA queries use parameterised Spring Data methods (no raw SQL string concatenation).
 
 ### Output
-- All 7 services routable through the gateway
-- Full integration test suite passing
-- All security requirements verified
+- All 7 services routable through the gateway (6-route table with env-var overridable URLs)
+- `czar-gateway`: JWT validation via `NimbusReactiveJwtDecoder`, CORS (`CorsWebFilter`), rate limiting (fixed-window, 429 + Retry-After), request logging, 5 passing tests
+- `czar-planner`: 5 Testcontainers PostgreSQL integration tests (`@Tag("integration")`) covering CRUD, conflict detection, RFC 7807, Bean Validation
+- `czar-notes`: 5 Testcontainers PostgreSQL integration tests covering CRUD, LIKE search, pin/unpin, RFC 7807; test-scoped Flyway migration creates full users schema with tsvector trigger
+- `czar-user`: pre-existing `czar.internal.service-token` missing property fixed; all 18 tests pass
+- `NoteController.create`: `@Valid` added for consistency with all other service controllers
+- All security requirements verified (parameterised queries, BCrypt, JWT RS256)
 
 ---
 

@@ -21,3 +21,6 @@ spring:
       - com.google.cloud.spring.autoconfigure.pubsub.GcpPubSubAutoConfiguration
       - com.google.cloud.spring.autoconfigure.core.GcpContextAutoConfiguration
 # jwt.public-key-path intentionally omitted — SecurityConfig falls back to permitAll in tests
+czar:
+  internal:
+    service-token: test-internal-token

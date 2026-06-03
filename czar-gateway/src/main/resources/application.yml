@@ -6,15 +6,46 @@ spring:
     name: czar-gateway
   cloud:
     gateway:
-      # Routes are configured in Phase 9 after all services are implemented.
-      # Phase 9 routing table:
-      #   /auth/**              → czar-auth:8081    (public, no JWT)
-      #   /api/v1/users/**      → czar-user:8082    (JWT required)
-      #   /api/v1/plans/**      → czar-planner:8083 (JWT required)
-      #   /api/v1/notes/**      → czar-notes:8084   (JWT required)
-      #   /api/v1/voice/**      → czar-voice-ai:8085 (JWT required)
-      #   /api/v1/notifications/** → czar-notification:8087 (JWT required)
-      routes: []
+      routes:
+        # Auth service — public, no JWT required
+        - id: czar-auth
+          uri: ${CZAR_AUTH_URL:http://czar-auth:8081}
+          predicates:
+            - Path=/auth/**
+
+        # User service — JWT required (enforced at gateway + at service)
+        - id: czar-user
+          uri: ${CZAR_USER_URL:http://czar-user:8082}
+          predicates:
+            - Path=/api/v1/users/**
+
+        # Planner service — JWT required
+        - id: czar-planner
+          uri: ${CZAR_PLANNER_URL:http://czar-planner:8083}
+          predicates:
+            - Path=/api/v1/plans/**
+
+        # Notes service — JWT required
+        - id: czar-notes
+          uri: ${CZAR_NOTES_URL:http://czar-notes:8084}
+          predicates:
+            - Path=/api/v1/notes/**
+
+        # Voice AI service — JWT required
+        - id: czar-voice-ai
+          uri: ${CZAR_VOICE_AI_URL:http://czar-voice-ai:8085}
+          predicates:
+            - Path=/api/v1/voice/**
+
+        # Notification service — JWT required
+        - id: czar-notification
+          uri: ${CZAR_NOTIFICATION_URL:http://czar-notification:8087}
+          predicates:
+            - Path=/api/v1/notifications/**
+
+# Uncomment to enable JWT validation at the gateway layer:
+# jwt:
+#   public-key-path: classpath:keys/public.pem
 
 management:
   endpoints:

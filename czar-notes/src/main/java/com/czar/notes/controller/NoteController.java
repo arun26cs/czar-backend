@@ -45,7 +45,7 @@ public class NoteController {
     @PostMapping
     public ResponseEntity<NoteResponse> create(
             Authentication auth,
-            @RequestBody NoteCreateRequest request) {
+            @Valid @RequestBody NoteCreateRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(noteService.create(UUID.fromString(auth.getName()), request));
     }
