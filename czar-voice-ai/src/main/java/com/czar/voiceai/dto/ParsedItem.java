@@ -14,14 +14,15 @@ import java.util.UUID;
  * When non-empty, the client must prompt the user to fill them before calling /commit.
  */
 public record ParsedItem(
-        String type,           // "plan" | "note"
+        String type,              // "plan" | "note"
         String title,
         LocalDate scheduledDate,
         Integer hour,
         Integer minute,
         Integer durationMinutes,
         String body,
-        String planType,       // "task" | "event" | "reminder" (plans only)
-        List<UUID> tagIds,
+        String planType,          // "task" | "event" | "reminder" (plans only)
+        UUID suggestedTagId,      // matched from existingTags by name (nullable)
+        String suggestedTagName,  // tag name as suggested by AI (nullable)
         List<String> missingFields) {
 }

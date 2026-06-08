@@ -33,4 +33,15 @@ public class UserController {
         UUID userId = UUID.fromString(auth.getName());
         return ResponseEntity.ok(userService.updateProfile(userId, request));
     }
+
+    /**
+     * DELETE /api/v1/users/me
+     * Soft-deletes the account. Required by Apple App Store review guidelines.
+     * Removes device tokens immediately; Pub/Sub event triggers downstream cleanup.
+     */
+    @DeleteMapping
+    public ResponseEntity<Void> deleteAccount(Authentication auth) {
+        userService.deleteAccount(UUID.fromString(auth.getName()));
+        return ResponseEntity.noContent().build();
+    }
 }

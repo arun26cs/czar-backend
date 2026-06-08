@@ -1,6 +1,7 @@
 package com.czar.voiceai.service;
 
 import com.czar.voiceai.dto.ParsedItem;
+import com.czar.voiceai.dto.TagContext;
 import com.czar.voiceai.dto.VoiceContext;
 import com.czar.voiceai.dto.VoiceParseRequest;
 import com.czar.voiceai.dto.VoiceParseResponse;
@@ -48,9 +49,13 @@ public class VoiceParseService {
               minute (0-59 integer), durationMinutes (integer > 0), planType ("task"|"event"|"reminder").
               Use null for any field not mentioned.
             For type "note": also include body (string). Use null if not mentioned.
+            Tag assignment: if the user's available tags are provided, pick the best matching tag by name.
+              Include "suggestedTagName" (the tag name string) and "suggestedTagId" (its UUID string) in the item.
+              Use null if no tag is a good match. Do NOT invent tag names not in the provided list.
             Today's date is %s. Timezone: %s.
+            Available tags: %s
             Respond ONLY with a valid JSON array. No markdown, no explanation.
-            Example: [{"type":"plan","title":"Run","scheduledDate":"2025-06-02","hour":7,"minute":0,"durationMinutes":30,"planType":"task"}]
+            Example: [{"type":"plan","title":"Run","scheduledDate":"2025-06-02","hour":7,"minute":0,"durationMinutes":30,"planType":"task","suggestedTagName":"Health","suggestedTagId":"uuid-here"}]
             """;
 
     private final GroqClient groqClient;
@@ -67,7 +72,15 @@ public class VoiceParseService {
         String timezone = (ctx != null && ctx.timezone() != null && !ctx.timezone().isBlank())
                 ? ctx.timezone() : "UTC";
 
-        String systemPrompt = SYSTEM_PROMPT.formatted(date, timezone);
+        // Build tags summary for the prompt
+        String tagsJson = "none";
+        if (ctx != null && ctx.existingTags() != null && !ctx.existingTags().isEmpty()) {
+            tagsJson = ctx.existingTags().stream()
+                    .map(t -> "{\"id\":\"" + t.id() + "\",\"name\":\"" + t.name() + "\"}")
+                    .collect(java.util.stream.Collectors.joining(",", "[", "]"));
+        }
+
+        String systemPrompt = SYSTEM_PROMPT.formatted(date, timezone, tagsJson);
 
         return groqClient.chat(systemPrompt, request.transcript())
                 .map(this::parseGroqContent)
@@ -107,6 +120,8 @@ public class VoiceParseService {
     private ParsedItem mapToItem(Map<String, Object> raw) {
         String type = str(raw, "type", "note");
         String title = str(raw, "title", "");
+        String suggestedTagName = str(raw, "suggestedTagName", null);
+        UUID suggestedTagId = parseUuid(raw.get("suggestedTagId"));
 
         if ("plan".equals(type)) {
             LocalDate scheduledDate = parseDate(raw.get("scheduledDate"));
@@ -116,13 +131,13 @@ public class VoiceParseService {
             String planType = str(raw, "planType", "task");
             List<String> missing = missingPlanFields(title, scheduledDate, hour, duration);
             return new ParsedItem(type, title, scheduledDate, hour, minute, duration,
-                    null, planType, null, missing);
+                    null, planType, suggestedTagId, suggestedTagName, missing);
         } else {
             // note
             String body = str(raw, "body", null);
             List<String> missing = (title == null || title.isBlank()) ? List.of("title") : List.of();
             return new ParsedItem("note", title, null, null, null, null,
-                    body, null, null, missing);
+                    body, null, suggestedTagId, suggestedTagName, missing);
         }
     }
 
@@ -160,6 +175,12 @@ public class VoiceParseService {
     private LocalDate parseDate(Object val) {
         if (val == null) return null;
         try { return LocalDate.parse(val.toString()); }
+        catch (Exception e) { return null; }
+    }
+
+    private UUID parseUuid(Object val) {
+        if (val == null) return null;
+        try { return UUID.fromString(val.toString()); }
         catch (Exception e) { return null; }
     }
 }

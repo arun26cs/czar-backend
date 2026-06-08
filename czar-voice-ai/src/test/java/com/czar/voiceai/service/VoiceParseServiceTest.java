@@ -1,5 +1,6 @@
 package com.czar.voiceai.service;
 
+import com.czar.voiceai.dto.TagContext;
 import com.czar.voiceai.dto.VoiceContext;
 import com.czar.voiceai.dto.VoiceParseRequest;
 import com.czar.voiceai.dto.VoiceParseResponse;
@@ -15,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.*;
@@ -35,7 +37,7 @@ class VoiceParseServiceTest {
 
     private static final UUID USER_ID = UUID.fromString("00000000-0000-0000-0000-000000000001");
     private static final LocalDate TODAY = LocalDate.of(2025, 6, 2);
-    private static final VoiceContext CTX = new VoiceContext(TODAY, "UTC");
+    private static final VoiceContext CTX = new VoiceContext(TODAY, "UTC", null);
 
     // -------------------------------------------------------------------------
     // Complete plan — no missing fields
@@ -197,5 +199,61 @@ class VoiceParseServiceTest {
                 new VoiceParseRequest("Quick note", null)).block();
 
         assertThat(resp.parsedCount()).isEqualTo(1);
+    }
+
+    // -------------------------------------------------------------------------
+    // Fix 1 — existingTags in context → suggestedTagId / suggestedTagName mapping
+    // -------------------------------------------------------------------------
+
+    @Test
+    void parse_withExistingTags_mapsSuggestedTagFromGroqResponse() {
+        UUID tagId = UUID.fromString("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
+        TagContext tag = new TagContext(tagId, "Health", "#10B981");
+        VoiceContext ctx = new VoiceContext(TODAY, "UTC", List.of(tag));
+
+        when(groqClient.chat(anyString(), anyString())).thenReturn(Mono.just(
+                "[{\"type\":\"note\",\"title\":\"Gym session\",\"body\":\"Leg day\"," +
+                "\"suggestedTagName\":\"Health\",\"suggestedTagId\":\"aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa\"}]"));
+
+        VoiceParseResponse resp = voiceParseService.parse(USER_ID,
+                new VoiceParseRequest("Gym session", ctx)).block();
+
+        assertThat(resp.parsedCount()).isEqualTo(1);
+        assertThat(resp.items().get(0).suggestedTagName()).isEqualTo("Health");
+        assertThat(resp.items().get(0).suggestedTagId()).isEqualTo(tagId);
+    }
+
+    @Test
+    void parse_withExistingTags_invalidUuidFromGroq_suggestedTagIdIsNull() {
+        UUID tagId = UUID.fromString("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb");
+        TagContext tag = new TagContext(tagId, "Work", "#6366F1");
+        VoiceContext ctx = new VoiceContext(TODAY, "UTC", List.of(tag));
+
+        // Groq returns a non-UUID string for suggestedTagId
+        when(groqClient.chat(anyString(), anyString())).thenReturn(Mono.just(
+                "[{\"type\":\"note\",\"title\":\"Team meeting\",\"suggestedTagName\":\"Work\"," +
+                "\"suggestedTagId\":\"not-a-uuid\"}]"));
+
+        VoiceParseResponse resp = voiceParseService.parse(USER_ID,
+                new VoiceParseRequest("Team meeting", ctx)).block();
+
+        assertThat(resp.parsedCount()).isEqualTo(1);
+        assertThat(resp.items().get(0).suggestedTagName()).isEqualTo("Work");
+        assertThat(resp.items().get(0).suggestedTagId()).isNull();
+    }
+
+    @Test
+    void parse_noExistingTagsInContext_suggestedTagFieldsAreNull() {
+        VoiceContext ctx = new VoiceContext(TODAY, "UTC", null);
+
+        when(groqClient.chat(anyString(), anyString())).thenReturn(Mono.just(
+                "[{\"type\":\"note\",\"title\":\"Plain note\"}]"));
+
+        VoiceParseResponse resp = voiceParseService.parse(USER_ID,
+                new VoiceParseRequest("Plain note", ctx)).block();
+
+        assertThat(resp.parsedCount()).isEqualTo(1);
+        assertThat(resp.items().get(0).suggestedTagId()).isNull();
+        assertThat(resp.items().get(0).suggestedTagName()).isNull();
     }
 }

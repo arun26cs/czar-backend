@@ -50,14 +50,14 @@ class VoiceControllerTest {
     @Test
     void parse_returns200WithItems() throws Exception {
         ParsedItem item = new ParsedItem("plan", "Morning Run",
-                TODAY, 7, 0, 30, null, "task", null, List.of());
+                TODAY, 7, 0, 30, null, "task", null, null, List.of());
         VoiceParseResponse response = new VoiceParseResponse(List.of(item), 1, false);
 
         when(voiceParseService.parse(any(), any())).thenReturn(Mono.just(response));
 
         String body = objectMapper.writeValueAsString(
                 new VoiceParseRequest("Morning run at 7am for 30 mins",
-                        new VoiceContext(TODAY, "UTC")));
+                        new VoiceContext(TODAY, "UTC", null)));
 
         webTestClient.mutateWith(mockUser(USER_ID))
                 .post().uri("/api/v1/voice/parse")
@@ -79,7 +79,7 @@ class VoiceControllerTest {
     @Test
     void parse_returns200WithRequiresInput() throws Exception {
         ParsedItem item = new ParsedItem("plan", "Gym",
-                null, null, null, 60, null, "task", null, List.of("scheduledDate", "hour"));
+                null, null, null, 60, null, "task", null, null, List.of("scheduledDate", "hour"));
         VoiceParseResponse response = new VoiceParseResponse(List.of(item), 1, true);
 
         when(voiceParseService.parse(any(), any())).thenReturn(Mono.just(response));
@@ -147,9 +147,9 @@ class VoiceControllerTest {
                 .thenReturn(new VoiceCommitResponse(jobId, 2));
 
         ParsedItem plan = new ParsedItem("plan", "Morning Run",
-                TODAY, 7, 0, 30, null, "task", null, List.of());
+                TODAY, 7, 0, 30, null, "task", null, null, List.of());
         ParsedItem note = new ParsedItem("note", "Shopping list",
-                null, null, null, null, "milk", null, null, List.of());
+                null, null, null, null, "milk", null, null, null, List.of());
 
         String body = objectMapper.writeValueAsString(new VoiceCommitRequest(List.of(plan, note)));
 
@@ -190,7 +190,7 @@ class VoiceControllerTest {
                 .thenThrow(new IllegalArgumentException("Plan scheduledDate is required"));
 
         ParsedItem bad = new ParsedItem("plan", "Run",
-                null, 7, 0, 30, null, "task", null, List.of());
+                null, 7, 0, 30, null, "task", null, null, List.of());
 
         String body = objectMapper.writeValueAsString(new VoiceCommitRequest(List.of(bad)));
 

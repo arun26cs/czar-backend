@@ -22,7 +22,8 @@ public class TagService {
             new String[]{"Personal", "#6366F1"},
             new String[]{"Work",     "#F59E0B"},
             new String[]{"Health",   "#10B981"},
-            new String[]{"Travel",   "#3B82F6"}
+            new String[]{"Travel",   "#3B82F6"},
+            new String[]{"Finance",  "#EF4444"}
     );
 
     private final TagRepository tagRepository;

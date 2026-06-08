@@ -35,6 +35,8 @@ public class SecurityConfig {
                     "/auth/email/**",
                     "/auth/phone/**",
                     "/auth/token/**",
+                    "/auth/oauth/google/mobile",
+                    "/auth/oauth/github/mobile",
                     "/auth/.well-known/**",
                     "/actuator/health",
                     "/actuator/info"

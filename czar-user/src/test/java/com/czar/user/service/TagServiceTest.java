@@ -49,13 +49,13 @@ class TagServiceTest {
     }
 
     @Test
-    void seedDefaultTags_createsAllFourTags() {
+    void seedDefaultTags_createsAllFiveTags() {
         when(tagRepository.existsByUserIdAndName(any(), anyString())).thenReturn(false);
         when(tagRepository.save(any(Tag.class))).thenAnswer(inv -> inv.getArgument(0));
 
         tagService.seedDefaultTags(userId);
 
-        verify(tagRepository, times(4)).save(any(Tag.class));
+        verify(tagRepository, times(5)).save(any(Tag.class));
     }
 
     @Test
@@ -67,7 +67,7 @@ class TagServiceTest {
 
         tagService.seedDefaultTags(userId);
 
-        verify(tagRepository, times(3)).save(any(Tag.class)); // 4 - 1 existing
+        verify(tagRepository, times(4)).save(any(Tag.class)); // 5 - 1 existing
     }
 
     @Test

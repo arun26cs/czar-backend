@@ -32,19 +32,19 @@ class VoiceCommitServiceTest {
     private ParsedItem completePlan() {
         return new ParsedItem("plan", "Morning Run",
                 LocalDate.of(2025, 6, 2), 7, 0, 30,
-                null, "task", null, List.of());
+                null, "task", null, null, List.of());
     }
 
     private ParsedItem completeNote() {
         return new ParsedItem("note", "Shopping list",
                 null, null, null, null,
-                "milk, eggs", null, null, List.of());
+                "milk, eggs", null, null, null, List.of());
     }
 
     private ParsedItem incompletePlan() {
         return new ParsedItem("plan", "Gym",
                 null, null, null, 60,
-                null, "task", null, List.of("scheduledDate", "hour"));
+                null, "task", null, null, List.of("scheduledDate", "hour"));
     }
 
     // -------------------------------------------------------------------------
@@ -83,7 +83,7 @@ class VoiceCommitServiceTest {
     @Test
     void commit_planMissingScheduledDate_throws() {
         ParsedItem bad = new ParsedItem("plan", "Run", null, 7, 0, 30,
-                null, "task", null, List.of());
+                null, "task", null, null, List.of());
 
         assertThatThrownBy(() -> voiceCommitService.commit(USER_ID,
                 new VoiceCommitRequest(List.of(bad))))
@@ -99,7 +99,7 @@ class VoiceCommitServiceTest {
     void commit_planMissingHour_throws() {
         ParsedItem bad = new ParsedItem("plan", "Run",
                 LocalDate.of(2025, 6, 2), null, 0, 30,
-                null, "task", null, List.of());
+                null, "task", null, null, List.of());
 
         assertThatThrownBy(() -> voiceCommitService.commit(USER_ID,
                 new VoiceCommitRequest(List.of(bad))))
@@ -115,7 +115,7 @@ class VoiceCommitServiceTest {
     void commit_planZeroDuration_throws() {
         ParsedItem bad = new ParsedItem("plan", "Run",
                 LocalDate.of(2025, 6, 2), 7, 0, 0,
-                null, "task", null, List.of());
+                null, "task", null, null, List.of());
 
         assertThatThrownBy(() -> voiceCommitService.commit(USER_ID,
                 new VoiceCommitRequest(List.of(bad))))
@@ -131,7 +131,7 @@ class VoiceCommitServiceTest {
     void commit_noteBlankTitle_throws() {
         ParsedItem bad = new ParsedItem("note", "  ",
                 null, null, null, null,
-                "some body", null, null, List.of());
+                "some body", null, null, null, List.of());
 
         assertThatThrownBy(() -> voiceCommitService.commit(USER_ID,
                 new VoiceCommitRequest(List.of(bad))))
@@ -147,7 +147,7 @@ class VoiceCommitServiceTest {
     void commit_unknownType_throws() {
         ParsedItem bad = new ParsedItem("reminder", "Check email",
                 null, null, null, null,
-                null, null, null, List.of());
+                null, null, null, null, List.of());
 
         assertThatThrownBy(() -> voiceCommitService.commit(USER_ID,
                 new VoiceCommitRequest(List.of(bad))))

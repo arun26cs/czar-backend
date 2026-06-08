@@ -5,7 +5,14 @@ spring:
   application:
     name: czar-gateway
   cloud:
+    gcp:
+      project-id: ${GCP_PROJECT_ID:czar-local}
+      pubsub:
+        emulator-host: ${PUBSUB_EMULATOR_HOST:}
     gateway:
+      filter:
+        json-to-grpc:
+          enabled: false
       routes:
         # Auth service — public, no JWT required
         - id: czar-auth
