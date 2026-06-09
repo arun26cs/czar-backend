@@ -43,7 +43,11 @@ public class RateLimitingFilter implements GlobalFilter, Ordered {
         String bucketKey;
         long limit;
 
-        if (path.startsWith("/auth/")) {
+        if (path.startsWith("/auth/.well-known/") || path.equals("/auth/jwks.json")) {
+            // JWKS / discovery endpoints are public and frequently fetched — use global bucket
+            bucketKey = "global:" + ip;
+            limit     = GLOBAL_LIMIT;
+        } else if (path.startsWith("/auth/")) {
             bucketKey = "auth:" + ip;
             limit     = AUTH_LIMIT;
         } else if (path.startsWith("/api/v1/voice/")) {

@@ -39,6 +39,9 @@ management:
     health:
       show-details: always
 
+jwt:
+  public-key-path: classpath:keys/public.pem
+
 czar:
   internal:
     service-token: ${CZAR_INTERNAL_SERVICE_TOKEN:czar-internal-dev-token}

@@ -4,6 +4,11 @@ server:
 spring:
   application:
     name: czar-notification
+  autoconfigure:
+    exclude:
+      # firebase-admin pulls Firestore libraries; exclude GCP Firestore auto-config
+      # since this service uses Pub/Sub + FCM only, not Firestore directly.
+      - com.google.cloud.spring.autoconfigure.firestore.GcpFirestoreAutoConfiguration
   cloud:
     gcp:
       project-id: ${GCP_PROJECT_ID:czar-local}

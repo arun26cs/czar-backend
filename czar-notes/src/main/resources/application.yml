@@ -31,6 +31,9 @@ spring:
       pubsub:
         emulator-host: ${PUBSUB_EMULATOR_HOST:}
 
+jwt:
+  public-key-path: classpath:keys/public.pem
+
 management:
   endpoints:
     web:

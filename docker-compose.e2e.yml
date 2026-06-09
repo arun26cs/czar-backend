@@ -1,0 +1,16 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# docker-compose.e2e.yml — E2E test overrides
+#
+# Usage:
+#   docker compose -f docker-compose.yml -f docker-compose.e2e.yml up -d ...
+#
+# This overlay blanks SENDGRID_API_KEY so EmailService falls back to
+# console log mode: "=== [DEV MODE] OTP for <email> : <code> ==="
+# which the E2E test runner reads from `docker logs czar-auth`.
+# ─────────────────────────────────────────────────────────────────────────────
+services:
+  czar-auth:
+    environment:
+      # Blank = dev mode: OTP is logged to console instead of emailed.
+      # E2E test reads the OTP with: docker logs czar-auth | grep DEV MODE
+      - SENDGRID_API_KEY=

@@ -1,0 +1,62 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Czar Backend — E2E Test Configuration
+#
+# USAGE:
+#   .\czar-e2e.ps1                             # use defaults below
+#   .\czar-e2e.ps1 -ConfigFile .\test-config.yml
+#   .\czar-e2e.ps1 -SkipDockerManagement       # tests only, Docker already up
+#   .\czar-e2e.ps1 -Tests auth,user            # run specific suites only
+#   .\czar-e2e.ps1 -Rebuild                    # rebuild Docker images first
+#
+# Set a service to false to skip starting it (and skip its test suite).
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ─── Docker services ─────────────────────────────────────────────────────────
+# Infrastructure services (always needed if any app service is enabled)
+services:
+  postgres: true
+  pubsub-emulator: true
+  # Application services — set false to skip starting + skip tests
+  czar-gateway: true
+  czar-auth: true
+  czar-user: true
+  czar-planner: true
+  czar-notes: true
+  czar-voice-ai: true        # Requires GROQ_API_KEY in .env
+  czar-conflict: true
+  czar-notification: true
+
+# ─── Test suites ─────────────────────────────────────────────────────────────
+# Each suite can be individually toggled regardless of service state.
+# Suites that depend on an upstream suite share JWT state automatically.
+tests:
+  health: true               # Actuator /health for all enabled services
+  auth: true                 # OTP flow, JWT refresh, JWKS, logout
+  user: true                 # Profile CRUD, tags, preferences, device token
+  planner: true              # Plan CRUD, status, conflict, stats
+  notes: true                # Note CRUD, search, pin, tags
+  voice_ai: true             # Voice parse + commit (skipped if no GROQ key)
+  gateway: true              # Routing, CORS, rate-limit smoke test
+
+# ─── Runtime options ─────────────────────────────────────────────────────────
+options:
+  # Gateway URL — all client requests go through the gateway
+  base_url: "http://localhost:8080"
+  # Direct service URLs — used for health checks bypassing gateway
+  auth_url: "http://localhost:8081"
+  user_url: "http://localhost:8082"
+  planner_url: "http://localhost:8083"
+  notes_url: "http://localhost:8084"
+  voice_ai_url: "http://localhost:8085"
+  conflict_url: "http://localhost:8086"
+  notification_url: "http://localhost:8087"
+  # Behaviour
+  rebuild: false             # Run `docker compose build` before `up`
+  stop_after_test: false     # Run `docker compose down` after tests finish
+  startup_timeout: 90        # Seconds to wait for all services to become healthy
+  request_timeout: 30        # Seconds per HTTP request
+  # Test data
+  test_email: "e2e-test@czar.local"
+  internal_service_token: "czar-internal-dev-token"
+  # Voice AI transcript to test with
+  voice_transcript: "Schedule a team meeting tomorrow at 2pm for 1 hour and remind me to buy groceries"

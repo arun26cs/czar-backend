@@ -1,6 +1,8 @@
 package com.czar.notes.domain;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -18,7 +20,8 @@ public class Note {
     @Column(nullable = false)
     private String title = "";
 
-    @Column(name = "body", nullable = false)
+    @Column(name = "body", nullable = false, columnDefinition = "jsonb")
+    @JdbcTypeCode(SqlTypes.JSON)
     private String body = "{}";
 
     @Column(nullable = false)

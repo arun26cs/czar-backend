@@ -18,6 +18,9 @@ groq:
   model: llama-3.1-8b-instant
   timeout-seconds: 30
 
+jwt:
+  public-key-path: classpath:keys/public.pem
+
 management:
   endpoints:
     web:
