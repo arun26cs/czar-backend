@@ -49,3 +49,14 @@ czar:
 logging:
   level:
     com.czar: DEBUG
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+  info:
+    title: Czar Planner API
+    description: Plan CRUD, tags, conflict detection, stats
+    version: 1.0.0

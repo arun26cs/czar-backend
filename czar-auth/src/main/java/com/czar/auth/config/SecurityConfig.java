@@ -39,7 +39,11 @@ public class SecurityConfig {
                     "/auth/oauth/github/mobile",
                     "/auth/.well-known/**",
                     "/actuator/health",
-                    "/actuator/info"
+                    "/actuator/info",
+                    "/swagger-ui.html",
+                    "/swagger-ui/**",
+                    "/v3/api-docs",
+                    "/v3/api-docs/**"
                 ).permitAll()
                 .anyRequest().permitAll()   // OAuth2 /login/** handled by Spring Security internally
             )

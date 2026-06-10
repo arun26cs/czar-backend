@@ -46,3 +46,14 @@ management:
 logging:
   level:
     com.czar: DEBUG
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+  info:
+    title: Czar Notes API
+    description: Note CRUD, JSONB body, tags, pin, full-text search
+    version: 1.0.0

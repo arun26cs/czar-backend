@@ -33,3 +33,14 @@ management:
 logging:
   level:
     com.czar: DEBUG
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+  info:
+    title: Czar Voice AI API
+    description: Voice transcript → Groq AI → structured plan/note items
+    version: 1.0.0

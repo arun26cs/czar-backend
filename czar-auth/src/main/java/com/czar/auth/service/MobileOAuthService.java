@@ -28,14 +28,18 @@ import java.util.Map;
  * user resolution and JWT issuance.
  *
  * <p>The {@code redirectUri} in the request must match the one registered in the provider
- * console and must be the app's deep link scheme: {@code czar://auth/callback}.
+ * console and must be one of the allowed redirect URIs:
+ * {@code czar://auth/callback} or {@code https://auth.expo.io/@arun26cs/czar-app}.
  */
 @Service
 public class MobileOAuthService {
 
     private static final Logger log = LoggerFactory.getLogger(MobileOAuthService.class);
 
-    private static final String ALLOWED_MOBILE_REDIRECT_URI = "czar://auth/callback";
+    private static final java.util.Set<String> ALLOWED_MOBILE_REDIRECT_URIS = java.util.Set.of(
+            "czar://auth/callback",
+            "https://auth.expo.io/@arun26cs/czar-app"
+    );
 
     private static final String GOOGLE_TOKEN_URL  = "https://oauth2.googleapis.com/token";
     private static final String GOOGLE_USERINFO_URL = "https://www.googleapis.com/oauth2/v3/userinfo";
@@ -121,9 +125,9 @@ public class MobileOAuthService {
     // ── Private helpers ───────────────────────────────────────────────────────
 
     private void validateRedirectUri(String redirectUri) {
-        if (!ALLOWED_MOBILE_REDIRECT_URI.equals(redirectUri)) {
+        if (!ALLOWED_MOBILE_REDIRECT_URIS.contains(redirectUri)) {
             throw new IllegalArgumentException(
-                    "Invalid redirectUri — must be: " + ALLOWED_MOBILE_REDIRECT_URI);
+                    "Invalid redirectUri — must be one of: " + ALLOWED_MOBILE_REDIRECT_URIS);
         }
     }
 

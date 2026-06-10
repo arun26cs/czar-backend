@@ -1,0 +1,484 @@
+﻿{
+    "openapi":  "3.0.1",
+    "info":  {
+                 "title":  "OpenAPI definition",
+                 "version":  "v0"
+             },
+    "servers":  [
+                    {
+                        "url":  "http://localhost:8082",
+                        "description":  "Generated server url"
+                    }
+                ],
+    "paths":  {
+                  "/api/v1/users/me/tags":  {
+                                                "get":  {
+                                                            "tags":  [
+                                                                         "tag-controller"
+                                                                     ],
+                                                            "operationId":  "listTags",
+                                                            "responses":  {
+                                                                              "200":  {
+                                                                                          "description":  "OK",
+                                                                                          "content":  {
+                                                                                                          "*/*":  {
+                                                                                                                      "schema":  {
+                                                                                                                                     "type":  "array",
+                                                                                                                                     "items":  {
+                                                                                                                                                   "$ref":  "#/components/schemas/TagResponse"
+                                                                                                                                               }
+                                                                                                                                 }
+                                                                                                                  }
+                                                                                                      }
+                                                                                      }
+                                                                          }
+                                                        },
+                                                "post":  {
+                                                             "tags":  [
+                                                                          "tag-controller"
+                                                                      ],
+                                                             "operationId":  "createTag",
+                                                             "requestBody":  {
+                                                                                 "content":  {
+                                                                                                 "application/json":  {
+                                                                                                                          "schema":  {
+                                                                                                                                         "$ref":  "#/components/schemas/TagCreateRequest"
+                                                                                                                                     }
+                                                                                                                      }
+                                                                                             },
+                                                                                 "required":  true
+                                                                             },
+                                                             "responses":  {
+                                                                               "200":  {
+                                                                                           "description":  "OK",
+                                                                                           "content":  {
+                                                                                                           "*/*":  {
+                                                                                                                       "schema":  {
+                                                                                                                                      "$ref":  "#/components/schemas/TagResponse"
+                                                                                                                                  }
+                                                                                                                   }
+                                                                                                       }
+                                                                                       }
+                                                                           }
+                                                         }
+                                            },
+                  "/api/v1/users/me/device-token":  {
+                                                        "post":  {
+                                                                     "tags":  [
+                                                                                  "device-token-controller"
+                                                                              ],
+                                                                     "operationId":  "upsertToken",
+                                                                     "requestBody":  {
+                                                                                         "content":  {
+                                                                                                         "application/json":  {
+                                                                                                                                  "schema":  {
+                                                                                                                                                 "$ref":  "#/components/schemas/DeviceTokenRequest"
+                                                                                                                                             }
+                                                                                                                              }
+                                                                                                     },
+                                                                                         "required":  true
+                                                                                     },
+                                                                     "responses":  {
+                                                                                       "200":  {
+                                                                                                   "description":  "OK"
+                                                                                               }
+                                                                                   }
+                                                                 },
+                                                        "delete":  {
+                                                                       "tags":  [
+                                                                                    "device-token-controller"
+                                                                                ],
+                                                                       "operationId":  "removeToken",
+                                                                       "responses":  {
+                                                                                         "200":  {
+                                                                                                     "description":  "OK"
+                                                                                                 }
+                                                                                     }
+                                                                   }
+                                                    },
+                  "/api/v1/users/me":  {
+                                           "get":  {
+                                                       "tags":  [
+                                                                    "user-controller"
+                                                                ],
+                                                       "operationId":  "getProfile",
+                                                       "responses":  {
+                                                                         "200":  {
+                                                                                     "description":  "OK",
+                                                                                     "content":  {
+                                                                                                     "*/*":  {
+                                                                                                                 "schema":  {
+                                                                                                                                "$ref":  "#/components/schemas/UserProfileResponse"
+                                                                                                                            }
+                                                                                                             }
+                                                                                                 }
+                                                                                 }
+                                                                     }
+                                                   },
+                                           "delete":  {
+                                                          "tags":  [
+                                                                       "user-controller"
+                                                                   ],
+                                                          "operationId":  "deleteAccount",
+                                                          "responses":  {
+                                                                            "200":  {
+                                                                                        "description":  "OK"
+                                                                                    }
+                                                                        }
+                                                      },
+                                           "patch":  {
+                                                         "tags":  [
+                                                                      "user-controller"
+                                                                  ],
+                                                         "operationId":  "updateProfile",
+                                                         "requestBody":  {
+                                                                             "content":  {
+                                                                                             "application/json":  {
+                                                                                                                      "schema":  {
+                                                                                                                                     "$ref":  "#/components/schemas/UserProfileUpdateRequest"
+                                                                                                                                 }
+                                                                                                                  }
+                                                                                         },
+                                                                             "required":  true
+                                                                         },
+                                                         "responses":  {
+                                                                           "200":  {
+                                                                                       "description":  "OK",
+                                                                                       "content":  {
+                                                                                                       "*/*":  {
+                                                                                                                   "schema":  {
+                                                                                                                                  "$ref":  "#/components/schemas/UserProfileResponse"
+                                                                                                                              }
+                                                                                                               }
+                                                                                                   }
+                                                                                   }
+                                                                       }
+                                                     }
+                                       },
+                  "/api/v1/users/me/tags/{id}":  {
+                                                     "delete":  {
+                                                                    "tags":  [
+                                                                                 "tag-controller"
+                                                                             ],
+                                                                    "operationId":  "deleteTag",
+                                                                    "parameters":  [
+                                                                                       {
+                                                                                           "name":  "id",
+                                                                                           "in":  "path",
+                                                                                           "required":  true,
+                                                                                           "schema":  {
+                                                                                                          "type":  "string",
+                                                                                                          "format":  "uuid"
+                                                                                                      }
+                                                                                       }
+                                                                                   ],
+                                                                    "responses":  {
+                                                                                      "200":  {
+                                                                                                  "description":  "OK"
+                                                                                              }
+                                                                                  }
+                                                                },
+                                                     "patch":  {
+                                                                   "tags":  [
+                                                                                "tag-controller"
+                                                                            ],
+                                                                   "operationId":  "updateTag",
+                                                                   "parameters":  [
+                                                                                      {
+                                                                                          "name":  "id",
+                                                                                          "in":  "path",
+                                                                                          "required":  true,
+                                                                                          "schema":  {
+                                                                                                         "type":  "string",
+                                                                                                         "format":  "uuid"
+                                                                                                     }
+                                                                                      }
+                                                                                  ],
+                                                                   "requestBody":  {
+                                                                                       "content":  {
+                                                                                                       "application/json":  {
+                                                                                                                                "schema":  {
+                                                                                                                                               "$ref":  "#/components/schemas/TagUpdateRequest"
+                                                                                                                                           }
+                                                                                                                            }
+                                                                                                   },
+                                                                                       "required":  true
+                                                                                   },
+                                                                   "responses":  {
+                                                                                     "200":  {
+                                                                                                 "description":  "OK",
+                                                                                                 "content":  {
+                                                                                                                 "*/*":  {
+                                                                                                                             "schema":  {
+                                                                                                                                            "$ref":  "#/components/schemas/TagResponse"
+                                                                                                                                        }
+                                                                                                                         }
+                                                                                                             }
+                                                                                             }
+                                                                                 }
+                                                               }
+                                                 },
+                  "/api/v1/users/me/preferences":  {
+                                                       "get":  {
+                                                                   "tags":  [
+                                                                                "preferences-controller"
+                                                                            ],
+                                                                   "operationId":  "getPreferences",
+                                                                   "responses":  {
+                                                                                     "200":  {
+                                                                                                 "description":  "OK",
+                                                                                                 "content":  {
+                                                                                                                 "*/*":  {
+                                                                                                                             "schema":  {
+                                                                                                                                            "$ref":  "#/components/schemas/PreferencesResponse"
+                                                                                                                                        }
+                                                                                                                         }
+                                                                                                             }
+                                                                                             }
+                                                                                 }
+                                                               },
+                                                       "patch":  {
+                                                                     "tags":  [
+                                                                                  "preferences-controller"
+                                                                              ],
+                                                                     "operationId":  "updatePreferences",
+                                                                     "requestBody":  {
+                                                                                         "content":  {
+                                                                                                         "application/json":  {
+                                                                                                                                  "schema":  {
+                                                                                                                                                 "$ref":  "#/components/schemas/PreferencesUpdateRequest"
+                                                                                                                                             }
+                                                                                                                              }
+                                                                                                     },
+                                                                                         "required":  true
+                                                                                     },
+                                                                     "responses":  {
+                                                                                       "200":  {
+                                                                                                   "description":  "OK",
+                                                                                                   "content":  {
+                                                                                                                   "*/*":  {
+                                                                                                                               "schema":  {
+                                                                                                                                              "$ref":  "#/components/schemas/PreferencesResponse"
+                                                                                                                                          }
+                                                                                                                           }
+                                                                                                               }
+                                                                                               }
+                                                                                   }
+                                                                 }
+                                                   },
+                  "/internal/v1/device-tokens":  {
+                                                     "get":  {
+                                                                 "tags":  [
+                                                                              "internal-user-controller"
+                                                                          ],
+                                                                 "operationId":  "getDeviceToken",
+                                                                 "parameters":  [
+                                                                                    {
+                                                                                        "name":  "X-Service-Token",
+                                                                                        "in":  "header",
+                                                                                        "required":  true,
+                                                                                        "schema":  {
+                                                                                                       "type":  "string"
+                                                                                                   }
+                                                                                    },
+                                                                                    {
+                                                                                        "name":  "userId",
+                                                                                        "in":  "query",
+                                                                                        "required":  true,
+                                                                                        "schema":  {
+                                                                                                       "type":  "string",
+                                                                                                       "format":  "uuid"
+                                                                                                   }
+                                                                                    }
+                                                                                ],
+                                                                 "responses":  {
+                                                                                   "200":  {
+                                                                                               "description":  "OK",
+                                                                                               "content":  {
+                                                                                                               "*/*":  {
+                                                                                                                           "schema":  {
+                                                                                                                                          "$ref":  "#/components/schemas/DeviceTokenInfo"
+                                                                                                                                      }
+                                                                                                                       }
+                                                                                                           }
+                                                                                           }
+                                                                               }
+                                                             }
+                                                 }
+              },
+    "components":  {
+                       "schemas":  {
+                                       "TagCreateRequest":  {
+                                                                "required":  [
+                                                                                 "name"
+                                                                             ],
+                                                                "type":  "object",
+                                                                "properties":  {
+                                                                                   "name":  {
+                                                                                                "maxLength":  50,
+                                                                                                "minLength":  1,
+                                                                                                "type":  "string"
+                                                                                            },
+                                                                                   "colorHex":  {
+                                                                                                    "pattern":  "^#[0-9A-Fa-f]{6}$",
+                                                                                                    "type":  "string"
+                                                                                                }
+                                                                               }
+                                                            },
+                                       "TagResponse":  {
+                                                           "type":  "object",
+                                                           "properties":  {
+                                                                              "id":  {
+                                                                                         "type":  "string",
+                                                                                         "format":  "uuid"
+                                                                                     },
+                                                                              "name":  {
+                                                                                           "type":  "string"
+                                                                                       },
+                                                                              "colorHex":  {
+                                                                                               "type":  "string"
+                                                                                           },
+                                                                              "noteCount":  {
+                                                                                                "type":  "integer",
+                                                                                                "format":  "int64"
+                                                                                            },
+                                                                              "createdAt":  {
+                                                                                                "type":  "string",
+                                                                                                "format":  "date-time"
+                                                                                            }
+                                                                          }
+                                                       },
+                                       "DeviceTokenRequest":  {
+                                                                  "required":  [
+                                                                                   "fcmToken",
+                                                                                   "platform"
+                                                                               ],
+                                                                  "type":  "object",
+                                                                  "properties":  {
+                                                                                     "fcmToken":  {
+                                                                                                      "type":  "string"
+                                                                                                  },
+                                                                                     "platform":  {
+                                                                                                      "pattern":  "android|ios",
+                                                                                                      "type":  "string"
+                                                                                                  }
+                                                                                 }
+                                                              },
+                                       "UserProfileUpdateRequest":  {
+                                                                        "type":  "object",
+                                                                        "properties":  {
+                                                                                           "displayName":  {
+                                                                                                               "maxLength":  100,
+                                                                                                               "minLength":  1,
+                                                                                                               "type":  "string"
+                                                                                                           },
+                                                                                           "avatarUrl":  {
+                                                                                                             "maxLength":  2048,
+                                                                                                             "minLength":  0,
+                                                                                                             "type":  "string"
+                                                                                                         }
+                                                                                       }
+                                                                    },
+                                       "UserProfileResponse":  {
+                                                                   "type":  "object",
+                                                                   "properties":  {
+                                                                                      "id":  {
+                                                                                                 "type":  "string",
+                                                                                                 "format":  "uuid"
+                                                                                             },
+                                                                                      "displayName":  {
+                                                                                                          "type":  "string"
+                                                                                                      },
+                                                                                      "avatarUrl":  {
+                                                                                                        "type":  "string"
+                                                                                                    },
+                                                                                      "createdAt":  {
+                                                                                                        "type":  "string",
+                                                                                                        "format":  "date-time"
+                                                                                                    },
+                                                                                      "updatedAt":  {
+                                                                                                        "type":  "string",
+                                                                                                        "format":  "date-time"
+                                                                                                    }
+                                                                                  }
+                                                               },
+                                       "TagUpdateRequest":  {
+                                                                "type":  "object",
+                                                                "properties":  {
+                                                                                   "name":  {
+                                                                                                "maxLength":  50,
+                                                                                                "minLength":  1,
+                                                                                                "type":  "string"
+                                                                                            },
+                                                                                   "colorHex":  {
+                                                                                                    "pattern":  "^#[0-9A-Fa-f]{6}$",
+                                                                                                    "type":  "string"
+                                                                                                }
+                                                                               }
+                                                            },
+                                       "PreferencesUpdateRequest":  {
+                                                                        "type":  "object",
+                                                                        "properties":  {
+                                                                                           "theme":  {
+                                                                                                         "pattern":  "light|dark|system",
+                                                                                                         "type":  "string"
+                                                                                                     },
+                                                                                           "dashboardCollapsed":  {
+                                                                                                                      "type":  "boolean"
+                                                                                                                  },
+                                                                                           "defaultView":  {
+                                                                                                               "pattern":  "list|grid|calendar",
+                                                                                                               "type":  "string"
+                                                                                                           },
+                                                                                           "reminderMinutes":  {
+                                                                                                                   "maximum":  1440,
+                                                                                                                   "minimum":  1,
+                                                                                                                   "type":  "integer",
+                                                                                                                   "format":  "int32"
+                                                                                                               }
+                                                                                       }
+                                                                    },
+                                       "PreferencesResponse":  {
+                                                                   "type":  "object",
+                                                                   "properties":  {
+                                                                                      "id":  {
+                                                                                                 "type":  "string",
+                                                                                                 "format":  "uuid"
+                                                                                             },
+                                                                                      "userId":  {
+                                                                                                     "type":  "string",
+                                                                                                     "format":  "uuid"
+                                                                                                 },
+                                                                                      "theme":  {
+                                                                                                    "type":  "string"
+                                                                                                },
+                                                                                      "dashboardCollapsed":  {
+                                                                                                                 "type":  "boolean"
+                                                                                                             },
+                                                                                      "defaultView":  {
+                                                                                                          "type":  "string"
+                                                                                                      },
+                                                                                      "reminderMinutes":  {
+                                                                                                              "type":  "integer",
+                                                                                                              "format":  "int32"
+                                                                                                          },
+                                                                                      "updatedAt":  {
+                                                                                                        "type":  "string",
+                                                                                                        "format":  "date-time"
+                                                                                                    }
+                                                                                  }
+                                                               },
+                                       "DeviceTokenInfo":  {
+                                                               "type":  "object",
+                                                               "properties":  {
+                                                                                  "fcmToken":  {
+                                                                                                   "type":  "string"
+                                                                                               },
+                                                                                  "platform":  {
+                                                                                                   "type":  "string"
+                                                                                               }
+                                                                              }
+                                                           }
+                                   }
+                   }
+}

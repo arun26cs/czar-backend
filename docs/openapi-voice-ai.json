@@ -1,0 +1,217 @@
+﻿{
+    "openapi":  "3.0.1",
+    "info":  {
+                 "title":  "OpenAPI definition",
+                 "version":  "v0"
+             },
+    "servers":  [
+                    {
+                        "url":  "http://localhost:8085",
+                        "description":  "Generated server url"
+                    }
+                ],
+    "paths":  {
+                  "/api/v1/voice/parse":  {
+                                              "post":  {
+                                                           "tags":  [
+                                                                        "voice-controller"
+                                                                    ],
+                                                           "operationId":  "parse",
+                                                           "requestBody":  {
+                                                                               "content":  {
+                                                                                               "application/json":  {
+                                                                                                                        "schema":  {
+                                                                                                                                       "$ref":  "#/components/schemas/VoiceParseRequest"
+                                                                                                                                   }
+                                                                                                                    }
+                                                                                           },
+                                                                               "required":  true
+                                                                           },
+                                                           "responses":  {
+                                                                             "200":  {
+                                                                                         "description":  "OK",
+                                                                                         "content":  {
+                                                                                                         "*/*":  {
+                                                                                                                     "schema":  {
+                                                                                                                                    "$ref":  "#/components/schemas/VoiceParseResponse"
+                                                                                                                                }
+                                                                                                                 }
+                                                                                                     }
+                                                                                     }
+                                                                         }
+                                                       }
+                                          },
+                  "/api/v1/voice/commit":  {
+                                               "post":  {
+                                                            "tags":  [
+                                                                         "voice-controller"
+                                                                     ],
+                                                            "operationId":  "commit",
+                                                            "requestBody":  {
+                                                                                "content":  {
+                                                                                                "application/json":  {
+                                                                                                                         "schema":  {
+                                                                                                                                        "$ref":  "#/components/schemas/VoiceCommitRequest"
+                                                                                                                                    }
+                                                                                                                     }
+                                                                                            },
+                                                                                "required":  true
+                                                                            },
+                                                            "responses":  {
+                                                                              "200":  {
+                                                                                          "description":  "OK",
+                                                                                          "content":  {
+                                                                                                          "*/*":  {
+                                                                                                                      "schema":  {
+                                                                                                                                     "$ref":  "#/components/schemas/VoiceCommitResponse"
+                                                                                                                                 }
+                                                                                                                  }
+                                                                                                      }
+                                                                                      }
+                                                                          }
+                                                        }
+                                           }
+              },
+    "components":  {
+                       "schemas":  {
+                                       "TagContext":  {
+                                                          "type":  "object",
+                                                          "properties":  {
+                                                                             "id":  {
+                                                                                        "type":  "string",
+                                                                                        "format":  "uuid"
+                                                                                    },
+                                                                             "name":  {
+                                                                                          "type":  "string"
+                                                                                      },
+                                                                             "colorHex":  {
+                                                                                              "type":  "string"
+                                                                                          }
+                                                                         }
+                                                      },
+                                       "VoiceContext":  {
+                                                            "type":  "object",
+                                                            "properties":  {
+                                                                               "date":  {
+                                                                                            "type":  "string",
+                                                                                            "format":  "date"
+                                                                                        },
+                                                                               "timezone":  {
+                                                                                                "type":  "string"
+                                                                                            },
+                                                                               "existingTags":  {
+                                                                                                    "type":  "array",
+                                                                                                    "items":  {
+                                                                                                                  "$ref":  "#/components/schemas/TagContext"
+                                                                                                              }
+                                                                                                }
+                                                                           }
+                                                        },
+                                       "VoiceParseRequest":  {
+                                                                 "required":  [
+                                                                                  "transcript"
+                                                                              ],
+                                                                 "type":  "object",
+                                                                 "properties":  {
+                                                                                    "transcript":  {
+                                                                                                       "type":  "string"
+                                                                                                   },
+                                                                                    "context":  {
+                                                                                                    "$ref":  "#/components/schemas/VoiceContext"
+                                                                                                }
+                                                                                }
+                                                             },
+                                       "ParsedItem":  {
+                                                          "type":  "object",
+                                                          "properties":  {
+                                                                             "type":  {
+                                                                                          "type":  "string"
+                                                                                      },
+                                                                             "title":  {
+                                                                                           "type":  "string"
+                                                                                       },
+                                                                             "scheduledDate":  {
+                                                                                                   "type":  "string",
+                                                                                                   "format":  "date"
+                                                                                               },
+                                                                             "hour":  {
+                                                                                          "type":  "integer",
+                                                                                          "format":  "int32"
+                                                                                      },
+                                                                             "minute":  {
+                                                                                            "type":  "integer",
+                                                                                            "format":  "int32"
+                                                                                        },
+                                                                             "durationMinutes":  {
+                                                                                                     "type":  "integer",
+                                                                                                     "format":  "int32"
+                                                                                                 },
+                                                                             "body":  {
+                                                                                          "type":  "string"
+                                                                                      },
+                                                                             "planType":  {
+                                                                                              "type":  "string"
+                                                                                          },
+                                                                             "suggestedTagId":  {
+                                                                                                    "type":  "string",
+                                                                                                    "format":  "uuid"
+                                                                                                },
+                                                                             "suggestedTagName":  {
+                                                                                                      "type":  "string"
+                                                                                                  },
+                                                                             "missingFields":  {
+                                                                                                   "type":  "array",
+                                                                                                   "items":  {
+                                                                                                                 "type":  "string"
+                                                                                                             }
+                                                                                               }
+                                                                         }
+                                                      },
+                                       "VoiceParseResponse":  {
+                                                                  "type":  "object",
+                                                                  "properties":  {
+                                                                                     "items":  {
+                                                                                                   "type":  "array",
+                                                                                                   "items":  {
+                                                                                                                 "$ref":  "#/components/schemas/ParsedItem"
+                                                                                                             }
+                                                                                               },
+                                                                                     "parsedCount":  {
+                                                                                                         "type":  "integer",
+                                                                                                         "format":  "int32"
+                                                                                                     },
+                                                                                     "requiresInput":  {
+                                                                                                           "type":  "boolean"
+                                                                                                       }
+                                                                                 }
+                                                              },
+                                       "VoiceCommitRequest":  {
+                                                                  "required":  [
+                                                                                   "items"
+                                                                               ],
+                                                                  "type":  "object",
+                                                                  "properties":  {
+                                                                                     "items":  {
+                                                                                                   "type":  "array",
+                                                                                                   "items":  {
+                                                                                                                 "$ref":  "#/components/schemas/ParsedItem"
+                                                                                                             }
+                                                                                               }
+                                                                                 }
+                                                              },
+                                       "VoiceCommitResponse":  {
+                                                                   "type":  "object",
+                                                                   "properties":  {
+                                                                                      "jobId":  {
+                                                                                                    "type":  "string",
+                                                                                                    "format":  "uuid"
+                                                                                                },
+                                                                                      "published":  {
+                                                                                                        "type":  "integer",
+                                                                                                        "format":  "int32"
+                                                                                                    }
+                                                                                  }
+                                                               }
+                                   }
+                   }
+}

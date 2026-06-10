@@ -30,7 +30,8 @@ public class SecurityConfig {
             NimbusReactiveJwtDecoder decoder = NimbusReactiveJwtDecoder.withPublicKey(rsaPublicKey).build();
             http.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtDecoder(decoder)));
             http.authorizeExchange(ex -> ex
-                    .pathMatchers("/actuator/**").permitAll()
+                    .pathMatchers("/actuator/**", "/swagger-ui.html", "/swagger-ui/**",
+                            "/v3/api-docs", "/v3/api-docs/**", "/webjars/**").permitAll()
                     .anyExchange().authenticated());
         } else {
             http.authorizeExchange(ex -> ex.anyExchange().permitAll());

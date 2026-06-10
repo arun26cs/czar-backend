@@ -52,3 +52,14 @@ czar:
 logging:
   level:
     com.czar: DEBUG
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+  info:
+    title: Czar User API
+    description: User profile, preferences, tags, device tokens
+    version: 1.0.0

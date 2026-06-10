@@ -33,7 +33,8 @@ public class SecurityConfig {
             PlannerJwtFilter jwtFilter = new PlannerJwtFilter(rsaPublicKey);
             http
                 .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/actuator/health", "/actuator/info", "/internal/**").permitAll()
+                    .requestMatchers("/actuator/health", "/actuator/info", "/internal/**",
+                            "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**").permitAll()
                     .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

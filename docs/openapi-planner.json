@@ -1,0 +1,617 @@
+﻿{
+    "openapi":  "3.0.1",
+    "info":  {
+                 "title":  "OpenAPI definition",
+                 "version":  "v0"
+             },
+    "servers":  [
+                    {
+                        "url":  "http://localhost:8083",
+                        "description":  "Generated server url"
+                    }
+                ],
+    "paths":  {
+                  "/api/v1/plans/{id}":  {
+                                             "get":  {
+                                                         "tags":  [
+                                                                      "plan-controller"
+                                                                  ],
+                                                         "operationId":  "getById",
+                                                         "parameters":  [
+                                                                            {
+                                                                                "name":  "id",
+                                                                                "in":  "path",
+                                                                                "required":  true,
+                                                                                "schema":  {
+                                                                                               "type":  "string",
+                                                                                               "format":  "uuid"
+                                                                                           }
+                                                                            }
+                                                                        ],
+                                                         "responses":  {
+                                                                           "200":  {
+                                                                                       "description":  "OK",
+                                                                                       "content":  {
+                                                                                                       "*/*":  {
+                                                                                                                   "schema":  {
+                                                                                                                                  "$ref":  "#/components/schemas/PlanResponse"
+                                                                                                                              }
+                                                                                                               }
+                                                                                                   }
+                                                                                   }
+                                                                       }
+                                                     },
+                                             "put":  {
+                                                         "tags":  [
+                                                                      "plan-controller"
+                                                                  ],
+                                                         "operationId":  "update",
+                                                         "parameters":  [
+                                                                            {
+                                                                                "name":  "id",
+                                                                                "in":  "path",
+                                                                                "required":  true,
+                                                                                "schema":  {
+                                                                                               "type":  "string",
+                                                                                               "format":  "uuid"
+                                                                                           }
+                                                                            }
+                                                                        ],
+                                                         "requestBody":  {
+                                                                             "content":  {
+                                                                                             "application/json":  {
+                                                                                                                      "schema":  {
+                                                                                                                                     "$ref":  "#/components/schemas/PlanUpdateRequest"
+                                                                                                                                 }
+                                                                                                                  }
+                                                                                         },
+                                                                             "required":  true
+                                                                         },
+                                                         "responses":  {
+                                                                           "200":  {
+                                                                                       "description":  "OK",
+                                                                                       "content":  {
+                                                                                                       "*/*":  {
+                                                                                                                   "schema":  {
+                                                                                                                                  "$ref":  "#/components/schemas/PlanResponse"
+                                                                                                                              }
+                                                                                                               }
+                                                                                                   }
+                                                                                   }
+                                                                       }
+                                                     },
+                                             "delete":  {
+                                                            "tags":  [
+                                                                         "plan-controller"
+                                                                     ],
+                                                            "operationId":  "delete",
+                                                            "parameters":  [
+                                                                               {
+                                                                                   "name":  "id",
+                                                                                   "in":  "path",
+                                                                                   "required":  true,
+                                                                                   "schema":  {
+                                                                                                  "type":  "string",
+                                                                                                  "format":  "uuid"
+                                                                                              }
+                                                                               }
+                                                                           ],
+                                                            "responses":  {
+                                                                              "200":  {
+                                                                                          "description":  "OK"
+                                                                                      }
+                                                                          }
+                                                        }
+                                         },
+                  "/api/v1/plans/{id}/tags":  {
+                                                  "put":  {
+                                                              "tags":  [
+                                                                           "plan-controller"
+                                                                       ],
+                                                              "operationId":  "replaceTags",
+                                                              "parameters":  [
+                                                                                 {
+                                                                                     "name":  "id",
+                                                                                     "in":  "path",
+                                                                                     "required":  true,
+                                                                                     "schema":  {
+                                                                                                    "type":  "string",
+                                                                                                    "format":  "uuid"
+                                                                                                }
+                                                                                 }
+                                                                             ],
+                                                              "requestBody":  {
+                                                                                  "content":  {
+                                                                                                  "application/json":  {
+                                                                                                                           "schema":  {
+                                                                                                                                          "$ref":  "#/components/schemas/PlanTagsRequest"
+                                                                                                                                      }
+                                                                                                                       }
+                                                                                              },
+                                                                                  "required":  true
+                                                                              },
+                                                              "responses":  {
+                                                                                "200":  {
+                                                                                            "description":  "OK",
+                                                                                            "content":  {
+                                                                                                            "*/*":  {
+                                                                                                                        "schema":  {
+                                                                                                                                       "$ref":  "#/components/schemas/PlanResponse"
+                                                                                                                                   }
+                                                                                                                    }
+                                                                                                        }
+                                                                                        }
+                                                                            }
+                                                          }
+                                              },
+                  "/api/v1/plans":  {
+                                        "get":  {
+                                                    "tags":  [
+                                                                 "plan-controller"
+                                                             ],
+                                                    "operationId":  "listByDate",
+                                                    "parameters":  [
+                                                                       {
+                                                                           "name":  "date",
+                                                                           "in":  "query",
+                                                                           "required":  true,
+                                                                           "schema":  {
+                                                                                          "type":  "string",
+                                                                                          "format":  "date"
+                                                                                      }
+                                                                       }
+                                                                   ],
+                                                    "responses":  {
+                                                                      "200":  {
+                                                                                  "description":  "OK",
+                                                                                  "content":  {
+                                                                                                  "*/*":  {
+                                                                                                              "schema":  {
+                                                                                                                             "type":  "array",
+                                                                                                                             "items":  {
+                                                                                                                                           "$ref":  "#/components/schemas/PlanResponse"
+                                                                                                                                       }
+                                                                                                                         }
+                                                                                                          }
+                                                                                              }
+                                                                              }
+                                                                  }
+                                                },
+                                        "post":  {
+                                                     "tags":  [
+                                                                  "plan-controller"
+                                                              ],
+                                                     "operationId":  "create",
+                                                     "requestBody":  {
+                                                                         "content":  {
+                                                                                         "application/json":  {
+                                                                                                                  "schema":  {
+                                                                                                                                 "$ref":  "#/components/schemas/PlanCreateRequest"
+                                                                                                                             }
+                                                                                                              }
+                                                                                     },
+                                                                         "required":  true
+                                                                     },
+                                                     "responses":  {
+                                                                       "200":  {
+                                                                                   "description":  "OK",
+                                                                                   "content":  {
+                                                                                                   "*/*":  {
+                                                                                                               "schema":  {
+                                                                                                                              "$ref":  "#/components/schemas/PlanResponse"
+                                                                                                                          }
+                                                                                                           }
+                                                                                               }
+                                                                               }
+                                                                   }
+                                                 }
+                                    },
+                  "/api/v1/plans/{id}/status":  {
+                                                    "patch":  {
+                                                                  "tags":  [
+                                                                               "plan-controller"
+                                                                           ],
+                                                                  "operationId":  "updateStatus",
+                                                                  "parameters":  [
+                                                                                     {
+                                                                                         "name":  "id",
+                                                                                         "in":  "path",
+                                                                                         "required":  true,
+                                                                                         "schema":  {
+                                                                                                        "type":  "string",
+                                                                                                        "format":  "uuid"
+                                                                                                    }
+                                                                                     }
+                                                                                 ],
+                                                                  "requestBody":  {
+                                                                                      "content":  {
+                                                                                                      "application/json":  {
+                                                                                                                               "schema":  {
+                                                                                                                                              "$ref":  "#/components/schemas/PlanStatusRequest"
+                                                                                                                                          }
+                                                                                                                           }
+                                                                                                  },
+                                                                                      "required":  true
+                                                                                  },
+                                                                  "responses":  {
+                                                                                    "200":  {
+                                                                                                "description":  "OK",
+                                                                                                "content":  {
+                                                                                                                "*/*":  {
+                                                                                                                            "schema":  {
+                                                                                                                                           "$ref":  "#/components/schemas/PlanResponse"
+                                                                                                                                       }
+                                                                                                                        }
+                                                                                                            }
+                                                                                            }
+                                                                                }
+                                                              }
+                                                },
+                  "/api/v1/plans/{id}/confirm":  {
+                                                     "patch":  {
+                                                                   "tags":  [
+                                                                                "plan-controller"
+                                                                            ],
+                                                                   "operationId":  "confirm",
+                                                                   "parameters":  [
+                                                                                      {
+                                                                                          "name":  "id",
+                                                                                          "in":  "path",
+                                                                                          "required":  true,
+                                                                                          "schema":  {
+                                                                                                         "type":  "string",
+                                                                                                         "format":  "uuid"
+                                                                                                     }
+                                                                                      }
+                                                                                  ],
+                                                                   "responses":  {
+                                                                                     "200":  {
+                                                                                                 "description":  "OK",
+                                                                                                 "content":  {
+                                                                                                                 "*/*":  {
+                                                                                                                             "schema":  {
+                                                                                                                                            "$ref":  "#/components/schemas/PlanResponse"
+                                                                                                                                        }
+                                                                                                                         }
+                                                                                                             }
+                                                                                             }
+                                                                                 }
+                                                               }
+                                                 },
+                  "/internal/v1/plans":  {
+                                             "get":  {
+                                                         "tags":  [
+                                                                      "internal-plan-controller"
+                                                                  ],
+                                                         "operationId":  "getPlansForDate",
+                                                         "parameters":  [
+                                                                            {
+                                                                                "name":  "X-Service-Token",
+                                                                                "in":  "header",
+                                                                                "required":  true,
+                                                                                "schema":  {
+                                                                                               "type":  "string"
+                                                                                           }
+                                                                            },
+                                                                            {
+                                                                                "name":  "userId",
+                                                                                "in":  "query",
+                                                                                "required":  true,
+                                                                                "schema":  {
+                                                                                               "type":  "string",
+                                                                                               "format":  "uuid"
+                                                                                           }
+                                                                            },
+                                                                            {
+                                                                                "name":  "date",
+                                                                                "in":  "query",
+                                                                                "required":  true,
+                                                                                "schema":  {
+                                                                                               "type":  "string",
+                                                                                               "format":  "date"
+                                                                                           }
+                                                                            }
+                                                                        ],
+                                                         "responses":  {
+                                                                           "200":  {
+                                                                                       "description":  "OK",
+                                                                                       "content":  {
+                                                                                                       "*/*":  {
+                                                                                                                   "schema":  {
+                                                                                                                                  "type":  "array",
+                                                                                                                                  "items":  {
+                                                                                                                                                "$ref":  "#/components/schemas/PlanResponse"
+                                                                                                                                            }
+                                                                                                                              }
+                                                                                                               }
+                                                                                                   }
+                                                                                   }
+                                                                       }
+                                                     }
+                                         },
+                  "/api/v1/plans/stats":  {
+                                              "get":  {
+                                                          "tags":  [
+                                                                       "conflict-controller"
+                                                                   ],
+                                                          "operationId":  "getStats",
+                                                          "parameters":  [
+                                                                             {
+                                                                                 "name":  "date",
+                                                                                 "in":  "query",
+                                                                                 "required":  true,
+                                                                                 "schema":  {
+                                                                                                "type":  "string",
+                                                                                                "format":  "date"
+                                                                                            }
+                                                                             }
+                                                                         ],
+                                                          "responses":  {
+                                                                            "200":  {
+                                                                                        "description":  "OK",
+                                                                                        "content":  {
+                                                                                                        "*/*":  {
+                                                                                                                    "schema":  {
+                                                                                                                                   "$ref":  "#/components/schemas/PlanStatsResponse"
+                                                                                                                               }
+                                                                                                                }
+                                                                                                    }
+                                                                                    }
+                                                                        }
+                                                      }
+                                          },
+                  "/api/v1/plans/conflicts":  {
+                                                  "get":  {
+                                                              "tags":  [
+                                                                           "conflict-controller"
+                                                                       ],
+                                                              "operationId":  "getConflicts",
+                                                              "responses":  {
+                                                                                "200":  {
+                                                                                            "description":  "OK",
+                                                                                            "content":  {
+                                                                                                            "*/*":  {
+                                                                                                                        "schema":  {
+                                                                                                                                       "type":  "array",
+                                                                                                                                       "items":  {
+                                                                                                                                                     "$ref":  "#/components/schemas/ConflictPairResponse"
+                                                                                                                                                 }
+                                                                                                                                   }
+                                                                                                                    }
+                                                                                                        }
+                                                                                        }
+                                                                            }
+                                                          }
+                                              }
+              },
+    "components":  {
+                       "schemas":  {
+                                       "PlanUpdateRequest":  {
+                                                                 "type":  "object",
+                                                                 "properties":  {
+                                                                                    "title":  {
+                                                                                                  "type":  "string"
+                                                                                              },
+                                                                                    "planType":  {
+                                                                                                     "type":  "string"
+                                                                                                 },
+                                                                                    "scheduledDate":  {
+                                                                                                          "type":  "string",
+                                                                                                          "format":  "date"
+                                                                                                      },
+                                                                                    "hour":  {
+                                                                                                 "maximum":  23,
+                                                                                                 "minimum":  0,
+                                                                                                 "type":  "integer",
+                                                                                                 "format":  "int32"
+                                                                                             },
+                                                                                    "minute":  {
+                                                                                                   "maximum":  59,
+                                                                                                   "minimum":  0,
+                                                                                                   "type":  "integer",
+                                                                                                   "format":  "int32"
+                                                                                               },
+                                                                                    "durationMinutes":  {
+                                                                                                            "maximum":  1440,
+                                                                                                            "minimum":  1,
+                                                                                                            "type":  "integer",
+                                                                                                            "format":  "int32"
+                                                                                                        },
+                                                                                    "tagIds":  {
+                                                                                                   "type":  "array",
+                                                                                                   "items":  {
+                                                                                                                 "type":  "string",
+                                                                                                                 "format":  "uuid"
+                                                                                                             }
+                                                                                               }
+                                                                                }
+                                                             },
+                                       "PlanResponse":  {
+                                                            "type":  "object",
+                                                            "properties":  {
+                                                                               "id":  {
+                                                                                          "type":  "string",
+                                                                                          "format":  "uuid"
+                                                                                      },
+                                                                               "userId":  {
+                                                                                              "type":  "string",
+                                                                                              "format":  "uuid"
+                                                                                          },
+                                                                               "title":  {
+                                                                                             "type":  "string"
+                                                                                         },
+                                                                               "planType":  {
+                                                                                                "type":  "string"
+                                                                                            },
+                                                                               "scheduledDate":  {
+                                                                                                     "type":  "string",
+                                                                                                     "format":  "date"
+                                                                                                 },
+                                                                               "hour":  {
+                                                                                            "type":  "integer",
+                                                                                            "format":  "int32"
+                                                                                        },
+                                                                               "minute":  {
+                                                                                              "type":  "integer",
+                                                                                              "format":  "int32"
+                                                                                          },
+                                                                               "durationMinutes":  {
+                                                                                                       "type":  "integer",
+                                                                                                       "format":  "int32"
+                                                                                                   },
+                                                                               "status":  {
+                                                                                              "type":  "string"
+                                                                                          },
+                                                                               "confirmed":  {
+                                                                                                 "type":  "boolean"
+                                                                                             },
+                                                                               "aiGenerated":  {
+                                                                                                   "type":  "boolean"
+                                                                                               },
+                                                                               "reminderSent":  {
+                                                                                                    "type":  "boolean"
+                                                                                                },
+                                                                               "tagIds":  {
+                                                                                              "type":  "array",
+                                                                                              "items":  {
+                                                                                                            "type":  "string",
+                                                                                                            "format":  "uuid"
+                                                                                                        }
+                                                                                          },
+                                                                               "createdAt":  {
+                                                                                                 "type":  "string",
+                                                                                                 "format":  "date-time"
+                                                                                             },
+                                                                               "updatedAt":  {
+                                                                                                 "type":  "string",
+                                                                                                 "format":  "date-time"
+                                                                                             }
+                                                                           }
+                                                        },
+                                       "PlanTagsRequest":  {
+                                                               "required":  [
+                                                                                "tagIds"
+                                                                            ],
+                                                               "type":  "object",
+                                                               "properties":  {
+                                                                                  "tagIds":  {
+                                                                                                 "type":  "array",
+                                                                                                 "items":  {
+                                                                                                               "type":  "string",
+                                                                                                               "format":  "uuid"
+                                                                                                           }
+                                                                                             }
+                                                                              }
+                                                           },
+                                       "PlanCreateRequest":  {
+                                                                 "required":  [
+                                                                                  "planType",
+                                                                                  "scheduledDate",
+                                                                                  "title"
+                                                                              ],
+                                                                 "type":  "object",
+                                                                 "properties":  {
+                                                                                    "title":  {
+                                                                                                  "type":  "string"
+                                                                                              },
+                                                                                    "planType":  {
+                                                                                                     "type":  "string"
+                                                                                                 },
+                                                                                    "scheduledDate":  {
+                                                                                                          "type":  "string",
+                                                                                                          "format":  "date"
+                                                                                                      },
+                                                                                    "hour":  {
+                                                                                                 "maximum":  23,
+                                                                                                 "minimum":  0,
+                                                                                                 "type":  "integer",
+                                                                                                 "format":  "int32"
+                                                                                             },
+                                                                                    "minute":  {
+                                                                                                   "maximum":  59,
+                                                                                                   "minimum":  0,
+                                                                                                   "type":  "integer",
+                                                                                                   "format":  "int32"
+                                                                                               },
+                                                                                    "durationMinutes":  {
+                                                                                                            "maximum":  1440,
+                                                                                                            "minimum":  1,
+                                                                                                            "type":  "integer",
+                                                                                                            "format":  "int32"
+                                                                                                        },
+                                                                                    "tagIds":  {
+                                                                                                   "type":  "array",
+                                                                                                   "items":  {
+                                                                                                                 "type":  "string",
+                                                                                                                 "format":  "uuid"
+                                                                                                             }
+                                                                                               }
+                                                                                }
+                                                             },
+                                       "PlanStatusRequest":  {
+                                                                 "required":  [
+                                                                                  "status"
+                                                                              ],
+                                                                 "type":  "object",
+                                                                 "properties":  {
+                                                                                    "status":  {
+                                                                                                   "pattern":  "pending|done|skipped",
+                                                                                                   "type":  "string"
+                                                                                               }
+                                                                                }
+                                                             },
+                                       "PlanStatsResponse":  {
+                                                                 "type":  "object",
+                                                                 "properties":  {
+                                                                                    "total":  {
+                                                                                                  "type":  "integer",
+                                                                                                  "format":  "int64"
+                                                                                              },
+                                                                                    "done":  {
+                                                                                                 "type":  "integer",
+                                                                                                 "format":  "int64"
+                                                                                             },
+                                                                                    "pending":  {
+                                                                                                    "type":  "integer",
+                                                                                                    "format":  "int64"
+                                                                                                },
+                                                                                    "skipped":  {
+                                                                                                    "type":  "integer",
+                                                                                                    "format":  "int64"
+                                                                                                },
+                                                                                    "unresolvedConflicts":  {
+                                                                                                                "type":  "integer",
+                                                                                                                "format":  "int64"
+                                                                                                            }
+                                                                                }
+                                                             },
+                                       "ConflictPairResponse":  {
+                                                                    "type":  "object",
+                                                                    "properties":  {
+                                                                                       "conflictId":  {
+                                                                                                          "type":  "string",
+                                                                                                          "format":  "uuid"
+                                                                                                      },
+                                                                                       "planAId":  {
+                                                                                                       "type":  "string",
+                                                                                                       "format":  "uuid"
+                                                                                                   },
+                                                                                       "planATitle":  {
+                                                                                                          "type":  "string"
+                                                                                                      },
+                                                                                       "planBId":  {
+                                                                                                       "type":  "string",
+                                                                                                       "format":  "uuid"
+                                                                                                   },
+                                                                                       "planBTitle":  {
+                                                                                                          "type":  "string"
+                                                                                                      },
+                                                                                       "detectedAt":  {
+                                                                                                          "type":  "string",
+                                                                                                          "format":  "date-time"
+                                                                                                      }
+                                                                                   }
+                                                                }
+                                   }
+                   }
+}

@@ -1,0 +1,400 @@
+{
+  "info": {
+    "name": "Czar Backend API",
+    "_postman_id": "czar-backend-v1",
+    "description": "Complete Czar API — Auth, User, Planner, Notes, Voice AI. All /api/** requests auto-attach the JWT from the environment variable {{accessToken}}.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl",     "value": "http://localhost:8080", "description": "Gateway base URL" },
+    { "key": "accessToken", "value": "",                      "description": "Filled by 'Verify OTP' or 'Refresh Token' request" },
+    { "key": "refreshToken","value": "",                      "description": "Filled by 'Verify OTP' or 'Refresh Token' request" }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [{ "key": "token", "value": "{{accessToken}}", "type": "string" }]
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Get JWKS",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": "{{baseUrl}}/auth/.well-known/jwks.json"
+          }
+        },
+        {
+          "name": "Request Email OTP",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/email/request-otp",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"you@example.com\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Verify Email OTP",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "const body = pm.response.json();",
+                "if (body.accessToken)  pm.collectionVariables.set('accessToken',  body.accessToken);",
+                "if (body.refreshToken) pm.collectionVariables.set('refreshToken', body.refreshToken);"
+              ]
+            }
+          }],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/email/verify-otp",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"you@example.com\",\n  \"otp\": \"123456\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Google Mobile OAuth",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/oauth/google/mobile",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"4/0AfJohXn...\",\n  \"redirectUri\": \"czar://auth/callback\"\n}"
+            }
+          }
+        },
+        {
+          "name": "GitHub Mobile OAuth",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/oauth/github/mobile",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"abc123...\",\n  \"redirectUri\": \"czar://auth/callback\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "const body = pm.response.json();",
+                "if (body.accessToken)  pm.collectionVariables.set('accessToken',  body.accessToken);",
+                "if (body.refreshToken) pm.collectionVariables.set('refreshToken', body.refreshToken);"
+              ]
+            }
+          }],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/token/refresh",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/token/logout",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "Get My Profile",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/users/me"
+          }
+        },
+        {
+          "name": "Update My Profile",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/users/me",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"displayName\": \"Arun V\",\n  \"avatarUrl\": \"https://example.com/avatar.jpg\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Preferences",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/v1/users/me/preferences" }
+        },
+        {
+          "name": "Update Preferences",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/users/me/preferences",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"theme\": \"dark\",\n  \"reminderMinutes\": 10,\n  \"defaultView\": \"list\",\n  \"dashboardCollapsed\": false\n}"
+            }
+          }
+        },
+        {
+          "name": "List Tags",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/v1/users/me/tags" }
+        },
+        {
+          "name": "Create Tag",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/users/me/tags",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Fitness\",\n  \"colorHex\": \"#22c55e\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Tag",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/users/me/tags/:tagId",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Health\",\n  \"colorHex\": \"#16a34a\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Tag",
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/api/v1/users/me/tags/:tagId" }
+        },
+        {
+          "name": "Register Device Token",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/users/me/device-token",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fcmToken\": \"fxxx...\",\n  \"platform\": \"ios\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Remove Device Token",
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/api/v1/users/me/device-token" }
+        }
+      ]
+    },
+    {
+      "name": "Planner",
+      "item": [
+        {
+          "name": "List Plans",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/plans?date=2026-06-09",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "plans"],
+              "query": [
+                { "key": "date",   "value": "2026-06-09", "description": "YYYY-MM-DD" },
+                { "key": "status", "value": "pending",    "disabled": true },
+                { "key": "tags[]", "value": "uuid-here",  "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Plan",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/plans",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Team standup\",\n  \"planType\": \"event\",\n  \"scheduledDate\": \"2026-06-10\",\n  \"hour\": 9,\n  \"minute\": 0,\n  \"durationMinutes\": 30,\n  \"tagIds\": []\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Plan by ID",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/v1/plans/:planId" }
+        },
+        {
+          "name": "Update Plan",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/plans/:planId",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated standup\",\n  \"planType\": \"event\",\n  \"scheduledDate\": \"2026-06-10\",\n  \"hour\": 9,\n  \"minute\": 30,\n  \"durationMinutes\": 30\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Plan Status",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/plans/:planId/status",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"status\": \"done\"\n}" }
+          }
+        },
+        {
+          "name": "Confirm Plan",
+          "request": { "method": "PATCH", "url": "{{baseUrl}}/api/v1/plans/:planId/confirm" }
+        },
+        {
+          "name": "Set Plan Tags",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/plans/:planId/tags",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"tagIds\": [\"uuid-1\", \"uuid-2\"]\n}" }
+          }
+        },
+        {
+          "name": "Delete Plan",
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/api/v1/plans/:planId" }
+        },
+        {
+          "name": "Get Conflicts",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/plans/conflicts?date=2026-06-09"
+          }
+        },
+        {
+          "name": "Get Stats",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/plans/stats?date=2026-06-09"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Notes",
+      "item": [
+        {
+          "name": "List Notes",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/notes",
+              "query": [
+                { "key": "search",  "value": "keyword",  "disabled": true },
+                { "key": "pinned",  "value": "true",     "disabled": true },
+                { "key": "tags[]",  "value": "uuid-here","disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Note",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/notes",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"My first note\",\n  \"body\": {\"text\": \"Note content here\"},\n  \"pinned\": false,\n  \"tagIds\": []\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Note by ID",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/v1/notes/:noteId" }
+        },
+        {
+          "name": "Update Note",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/notes/:noteId",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated note\",\n  \"body\": {\"text\": \"Updated content\"},\n  \"pinned\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Set Note Tags",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/notes/:noteId/tags",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"tagIds\": [\"uuid-1\"]\n}" }
+          }
+        },
+        {
+          "name": "Delete Note",
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/api/v1/notes/:noteId" }
+        },
+        {
+          "name": "Get Pinned Notes",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/v1/notes/pinned" }
+        }
+      ]
+    },
+    {
+      "name": "Voice AI",
+      "item": [
+        {
+          "name": "Parse Transcript",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/voice/parse",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transcript\": \"Remind me to call John tomorrow at 3pm for 30 minutes\",\n  \"context\": {\n    \"date\": \"2026-06-09\",\n    \"timezone\": \"UTC\"\n  }\n}"
+            }
+          }
+        },
+        {
+          "name": "Commit Parsed Items",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/voice/commit",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    {\n      \"type\": \"plan\",\n      \"title\": \"Call John\",\n      \"scheduledDate\": \"2026-06-10\",\n      \"hour\": 15,\n      \"minute\": 0,\n      \"durationMinutes\": 30,\n      \"planType\": \"event\",\n      \"missingFields\": []\n    }\n  ]\n}"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

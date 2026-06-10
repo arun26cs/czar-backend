@@ -29,3 +29,13 @@ management:
 logging:
   level:
     com.czar: DEBUG
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+  info:
+    title: Czar Conflict Service API
+    description: Internal conflict detection endpoints
+    version: 1.0.0

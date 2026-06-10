@@ -1,0 +1,288 @@
+﻿{
+    "openapi":  "3.0.1",
+    "info":  {
+                 "title":  "OpenAPI definition",
+                 "version":  "v0"
+             },
+    "servers":  [
+                    {
+                        "url":  "http://localhost:8081",
+                        "description":  "Generated server url"
+                    }
+                ],
+    "paths":  {
+                  "/auth/token/refresh":  {
+                                              "post":  {
+                                                           "tags":  [
+                                                                        "token-controller"
+                                                                    ],
+                                                           "operationId":  "refresh",
+                                                           "requestBody":  {
+                                                                               "content":  {
+                                                                                               "application/json":  {
+                                                                                                                        "schema":  {
+                                                                                                                                       "$ref":  "#/components/schemas/RefreshRequest"
+                                                                                                                                   }
+                                                                                                                    }
+                                                                                           },
+                                                                               "required":  true
+                                                                           },
+                                                           "responses":  {
+                                                                             "200":  {
+                                                                                         "description":  "OK",
+                                                                                         "content":  {
+                                                                                                         "*/*":  {
+                                                                                                                     "schema":  {
+                                                                                                                                    "$ref":  "#/components/schemas/TokenPairResponse"
+                                                                                                                                }
+                                                                                                                 }
+                                                                                                     }
+                                                                                     }
+                                                                         }
+                                                       }
+                                          },
+                  "/auth/token/logout":  {
+                                             "post":  {
+                                                          "tags":  [
+                                                                       "token-controller"
+                                                                   ],
+                                                          "operationId":  "logout",
+                                                          "requestBody":  {
+                                                                              "content":  {
+                                                                                              "application/json":  {
+                                                                                                                       "schema":  {
+                                                                                                                                      "$ref":  "#/components/schemas/RefreshRequest"
+                                                                                                                                  }
+                                                                                                                   }
+                                                                                          },
+                                                                              "required":  true
+                                                                          },
+                                                          "responses":  {
+                                                                            "200":  {
+                                                                                        "description":  "OK"
+                                                                                    }
+                                                                        }
+                                                      }
+                                         },
+                  "/auth/oauth/google/mobile":  {
+                                                    "post":  {
+                                                                 "tags":  [
+                                                                              "mobile-o-auth-controller"
+                                                                          ],
+                                                                 "operationId":  "googleMobile",
+                                                                 "requestBody":  {
+                                                                                     "content":  {
+                                                                                                     "application/json":  {
+                                                                                                                              "schema":  {
+                                                                                                                                             "$ref":  "#/components/schemas/MobileOAuthRequest"
+                                                                                                                                         }
+                                                                                                                          }
+                                                                                                 },
+                                                                                     "required":  true
+                                                                                 },
+                                                                 "responses":  {
+                                                                                   "200":  {
+                                                                                               "description":  "OK",
+                                                                                               "content":  {
+                                                                                                               "*/*":  {
+                                                                                                                           "schema":  {
+                                                                                                                                          "$ref":  "#/components/schemas/TokenPairResponse"
+                                                                                                                                      }
+                                                                                                                       }
+                                                                                                           }
+                                                                                           }
+                                                                               }
+                                                             }
+                                                },
+                  "/auth/oauth/github/mobile":  {
+                                                    "post":  {
+                                                                 "tags":  [
+                                                                              "mobile-o-auth-controller"
+                                                                          ],
+                                                                 "operationId":  "githubMobile",
+                                                                 "requestBody":  {
+                                                                                     "content":  {
+                                                                                                     "application/json":  {
+                                                                                                                              "schema":  {
+                                                                                                                                             "$ref":  "#/components/schemas/MobileOAuthRequest"
+                                                                                                                                         }
+                                                                                                                          }
+                                                                                                 },
+                                                                                     "required":  true
+                                                                                 },
+                                                                 "responses":  {
+                                                                                   "200":  {
+                                                                                               "description":  "OK",
+                                                                                               "content":  {
+                                                                                                               "*/*":  {
+                                                                                                                           "schema":  {
+                                                                                                                                          "$ref":  "#/components/schemas/TokenPairResponse"
+                                                                                                                                      }
+                                                                                                                       }
+                                                                                                           }
+                                                                                           }
+                                                                               }
+                                                             }
+                                                },
+                  "/auth/email/verify-otp":  {
+                                                 "post":  {
+                                                              "tags":  [
+                                                                           "email-otp-controller"
+                                                                       ],
+                                                              "operationId":  "verifyOtp",
+                                                              "requestBody":  {
+                                                                                  "content":  {
+                                                                                                  "application/json":  {
+                                                                                                                           "schema":  {
+                                                                                                                                          "$ref":  "#/components/schemas/OtpVerifyRequest"
+                                                                                                                                      }
+                                                                                                                       }
+                                                                                              },
+                                                                                  "required":  true
+                                                                              },
+                                                              "responses":  {
+                                                                                "200":  {
+                                                                                            "description":  "OK",
+                                                                                            "content":  {
+                                                                                                            "*/*":  {
+                                                                                                                        "schema":  {
+                                                                                                                                       "$ref":  "#/components/schemas/TokenPairResponse"
+                                                                                                                                   }
+                                                                                                                    }
+                                                                                                        }
+                                                                                        }
+                                                                            }
+                                                          }
+                                             },
+                  "/auth/email/request-otp":  {
+                                                  "post":  {
+                                                               "tags":  [
+                                                                            "email-otp-controller"
+                                                                        ],
+                                                               "operationId":  "requestOtp",
+                                                               "requestBody":  {
+                                                                                   "content":  {
+                                                                                                   "application/json":  {
+                                                                                                                            "schema":  {
+                                                                                                                                           "$ref":  "#/components/schemas/OtpRequest"
+                                                                                                                                       }
+                                                                                                                        }
+                                                                                               },
+                                                                                   "required":  true
+                                                                               },
+                                                               "responses":  {
+                                                                                 "200":  {
+                                                                                             "description":  "OK",
+                                                                                             "content":  {
+                                                                                                             "*/*":  {
+                                                                                                                         "schema":  {
+                                                                                                                                        "type":  "object",
+                                                                                                                                        "additionalProperties":  {
+                                                                                                                                                                     "type":  "string"
+                                                                                                                                                                 }
+                                                                                                                                    }
+                                                                                                                     }
+                                                                                                         }
+                                                                                         }
+                                                                             }
+                                                           }
+                                              },
+                  "/auth/.well-known/jwks.json":  {
+                                                      "get":  {
+                                                                  "tags":  [
+                                                                               "jwks-controller"
+                                                                           ],
+                                                                  "operationId":  "jwks",
+                                                                  "responses":  {
+                                                                                    "200":  {
+                                                                                                "description":  "OK",
+                                                                                                "content":  {
+                                                                                                                "*/*":  {
+                                                                                                                            "schema":  {
+                                                                                                                                           "type":  "object",
+                                                                                                                                           "additionalProperties":  {
+                                                                                                                                                                        "type":  "object"
+                                                                                                                                                                    }
+                                                                                                                                       }
+                                                                                                                        }
+                                                                                                            }
+                                                                                            }
+                                                                                }
+                                                              }
+                                                  }
+              },
+    "components":  {
+                       "schemas":  {
+                                       "RefreshRequest":  {
+                                                              "required":  [
+                                                                               "refreshToken"
+                                                                           ],
+                                                              "type":  "object",
+                                                              "properties":  {
+                                                                                 "refreshToken":  {
+                                                                                                      "type":  "string"
+                                                                                                  }
+                                                                             }
+                                                          },
+                                       "TokenPairResponse":  {
+                                                                 "type":  "object",
+                                                                 "properties":  {
+                                                                                    "accessToken":  {
+                                                                                                        "type":  "string"
+                                                                                                    },
+                                                                                    "refreshToken":  {
+                                                                                                         "type":  "string"
+                                                                                                     },
+                                                                                    "expiresIn":  {
+                                                                                                      "type":  "integer",
+                                                                                                      "format":  "int32"
+                                                                                                  },
+                                                                                    "tokenType":  {
+                                                                                                      "type":  "string"
+                                                                                                  }
+                                                                                }
+                                                             },
+                                       "MobileOAuthRequest":  {
+                                                                  "required":  [
+                                                                                   "code",
+                                                                                   "redirectUri"
+                                                                               ],
+                                                                  "type":  "object",
+                                                                  "properties":  {
+                                                                                     "code":  {
+                                                                                                  "type":  "string"
+                                                                                              },
+                                                                                     "redirectUri":  {
+                                                                                                         "type":  "string"
+                                                                                                     }
+                                                                                 }
+                                                              },
+                                       "OtpVerifyRequest":  {
+                                                                "required":  [
+                                                                                 "email",
+                                                                                 "otp"
+                                                                             ],
+                                                                "type":  "object",
+                                                                "properties":  {
+                                                                                   "email":  {
+                                                                                                 "type":  "string"
+                                                                                             },
+                                                                                   "otp":  {
+                                                                                               "type":  "string"
+                                                                                           }
+                                                                               }
+                                                            },
+                                       "OtpRequest":  {
+                                                          "required":  [
+                                                                           "email"
+                                                                       ],
+                                                          "type":  "object",
+                                                          "properties":  {
+                                                                             "email":  {
+                                                                                           "type":  "string"
+                                                                                       }
+                                                                         }
+                                                      }
+                                   }
+                   }
+}

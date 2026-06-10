@@ -72,3 +72,14 @@ logging:
   level:
     com.czar: DEBUG
     org.springframework.security: INFO
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+  info:
+    title: Czar Auth API
+    description: Authentication — Email OTP, Google/GitHub OAuth2, JWT issue/refresh/revoke
+    version: 1.0.0

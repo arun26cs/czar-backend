@@ -40,3 +40,13 @@ management:
 logging:
   level:
     com.czar: DEBUG
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+  info:
+    title: Czar Notification Service API
+    description: FCM push notifications, reminders
+    version: 1.0.0
