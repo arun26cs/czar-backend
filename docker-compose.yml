@@ -90,6 +90,7 @@ services:
       - DB_USER_URL=jdbc:postgresql://postgres:5432/czardb
       - DB_USER_USERNAME=czar_user_role
       - DB_USER_PASSWORD=${DB_USER_PASSWORD:-czar_user_pass}
+      - CZAR_INTERNAL_SERVICE_TOKEN=${CZAR_INTERNAL_SERVICE_TOKEN:-czar-internal-dev-token}
     depends_on:
       postgres:
         condition: service_healthy
@@ -113,6 +114,7 @@ services:
       - DB_PLANNER_URL=jdbc:postgresql://postgres:5432/czardb
       - DB_PLANNER_USERNAME=czar_planner_role
       - DB_PLANNER_PASSWORD=${DB_PLANNER_PASSWORD:-czar_planner_pass}
+      - CZAR_INTERNAL_SERVICE_TOKEN=${CZAR_INTERNAL_SERVICE_TOKEN:-czar-internal-dev-token}
     depends_on:
       postgres:
         condition: service_healthy
@@ -175,6 +177,7 @@ services:
       - GCP_PROJECT_ID=czar-local
       - PUBSUB_EMULATOR_HOST=pubsub-emulator:8085
       - CZAR_PLANNER_BASE_URL=${CZAR_PLANNER_BASE_URL:-http://czar-planner:8083}
+      - CZAR_INTERNAL_SERVICE_TOKEN=${CZAR_INTERNAL_SERVICE_TOKEN:-czar-internal-dev-token}
     depends_on:
       - pubsub-emulator
     networks:
@@ -194,6 +197,7 @@ services:
       - PUBSUB_EMULATOR_HOST=pubsub-emulator:8085
       - CZAR_USER_BASE_URL=${CZAR_USER_BASE_URL:-http://czar-user:8082}
       - FIREBASE_PROJECT_ID=${FIREBASE_PROJECT_ID:-czar-local}
+      - CZAR_INTERNAL_SERVICE_TOKEN=${CZAR_INTERNAL_SERVICE_TOKEN:-czar-internal-dev-token}
     depends_on:
       - pubsub-emulator
     networks:

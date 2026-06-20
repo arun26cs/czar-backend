@@ -3,6 +3,8 @@ package com.czar.gateway.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.oauth2.jwt.NimbusReactiveJwtDecoder;
@@ -53,17 +55,31 @@ public class SecurityConfig {
     }
 
     /**
-     * CORS policy — allows the Czar web app and local development origins.
-     * Production: only prodczar.com; local dev: localhost:3000 / localhost:8080.
+     * CORS policy — MUST run before Spring Security (order HIGHEST_PRECEDENCE)
+     * so OPTIONS preflight requests are answered with CORS headers before the
+     * security filter chain can reject them with 403.
      */
     @Bean
+    @Order(Ordered.HIGHEST_PRECEDENCE)
     public CorsWebFilter corsWebFilter() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of(
+        config.setAllowedOriginPatterns(List.of(
+                // Production web
                 "https://prodczar.com",
                 "https://www.prodczar.com",
+                // Local web dev
                 "http://localhost:3000",
-                "http://localhost:8080"
+                "http://localhost:8080",
+                "http://localhost:19000",
+                "http://localhost:19006",
+                // Expo Go on physical device — any local network IP
+                "http://172.*.*.*",
+                "http://192.168.*.*",
+                "http://10.*.*.*",
+                // Expo hosted proxy
+                "https://expo.io",
+                "https://*.expo.io",
+                "https://*.expo.dev"
         ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Device-Hint", "X-Service-Token"));
